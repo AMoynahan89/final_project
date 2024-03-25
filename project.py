@@ -1,13 +1,16 @@
 def main():
+    get_user_id()
+    load_user_data()
+    save_user_data()
+    
+
+def get_user_id():
 
 
-def function_1():
+def load_user_data():
 
 
-def function_2():
-
-
-def function_n():
+def save_user_data():
 
 
 if __name__ == "__main__":
