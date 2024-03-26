@@ -14,13 +14,33 @@ import re
 
 def main():
     user_response = input("Do you have an account? (yes/no): ").lower()
+    while user_response not in ["yes", "no"]:
+        print("Please answer with 'yes' or 'no'.")
+        user_response = input("Do you have an account? (yes/no): ").lower()
+    
     if user_response == "yes":
         login_user()
-    elif user_response == "no":
+    else:
         create_new_user()
-    #get_or_create_user()
-    #add_user_data()
-    #recall_user_data()
+
+
+def validate_credentials(credentials):
+    if re.fullmatch(r"([a-z0-9_]+)", credentials, re.IGNORECASE):
+        return credentials
+    else:
+        print("Something went wrong.")
+    
+
+def create_new_user():
+    username = input("Enter user name: ")
+    validate_credentials(username)
+    password = input("Enter password: ")
+    validate_credentials(password)
+
+
+def login_user():
+    pass
+
 
 def get_or_create_user(username, password):
     with sqlite3.connect("database/my_database.db") as con:
@@ -32,23 +52,6 @@ def get_or_create_user(username, password):
             print(f"{username} is a registered user.", end="")
         else:
             print(f"{username} is not a registered user.", end="")
-
-
-def validate_credentials(credentials):
-    if re.fullmatch(r"([a-z0-9_]+)", credentials, re.IGNORECASE):
-        return credentials
-    
-
-
-def create_new_user():
-    username = input("Enter user name: ")
-    validate_credentials(username)
-    password = input("Enter password: ")
-    validate_credentials(password)
-
-
-def login_user():
-    validate_credentials()
 
 
 def add_user_data():
