@@ -1,23 +1,66 @@
 import sqlite3
 import re
 
+"""
+1. existing user or not
+2.1 user exists, log in, load data and continue program(start ai chat)
+2.2 user does not exist, create user and continue program(start ai chat)
+3. add new user data if needed or recall existing data if needed.
+4. just chat with ai
+5. quit
+"""
+
+
+
 def main():
-    current_user = input("Enter user name: ")
-    current_user_password = input("Enter password: ")
-    get_or_create_user(current_user, current_user_password)
+    user_response = input("Do you have an account? (yes/no): ").lower()
+    if user_response == "yes":
+        login_user()
+    elif user_response == "no":
+        create_new_user()
+    #get_or_create_user()
     #add_user_data()
     #recall_user_data()
 
-def get_or_create_user(current_user, current_user_password):
+def get_or_create_user(username, password):
     with sqlite3.connect("database/my_database.db") as con:
         cursor = con.cursor()
         username = cursor.execute("SELECT username FROM users")
         users = username.fetchall()
         usernames = [user[0] for user in users]
-        if current_user in usernames:
-            print(f"{current_user} is a registered user.", end="")
+        if username in usernames:
+            print(f"{username} is a registered user.", end="")
         else:
-            print(f"{current_user} is not a registered user.", end="")
+            print(f"{username} is not a registered user.", end="")
+
+
+def validate_credentials(credentials):
+    if re.fullmatch(r"([a-z0-9_]+)", credentials, re.IGNORECASE):
+        return credentials
+    
+
+
+def create_new_user():
+    username = input("Enter user name: ")
+    validate_credentials(username)
+    password = input("Enter password: ")
+    validate_credentials(password)
+
+
+def login_user():
+    validate_credentials()
+
+
+def add_user_data():
+    pass
+
+
+def recall_user_data():
+    pass
+
+
+if __name__ == "__main__":
+    main()
 
 
 #Creates the "users" table.
@@ -41,15 +84,6 @@ def get_or_create_user(current_user, current_user_password):
 #""")
 
 #con.commit()
-
-
-def add_user_data():
-    pass
-
-
-def recall_user_data():
-    pass
-
-
-if __name__ == "__main__":
-    main()
+            
+#result = cursor.execute("SELECT name FROM sqlite_master")
+#print(result.fetchall())
