@@ -34,11 +34,10 @@ def validate_credentials(credential_type):
     
 
 def create_new_user():
-    username = input("Enter user name: ")
-    validate_credentials(username)
-    password = input("Enter password: ")
-    validate_credentials(password)
-
+    print("Create New Account")
+    username = validate_credentials("username")
+    password = validate_credentials("password")
+    # Add code here to insert new user into database if they don't already exist
 
 def login_user():
     pass
