@@ -24,11 +24,13 @@ def main():
         create_new_user()
 
 
-def validate_credentials(credentials):
-    if re.fullmatch(r"([a-z0-9_]+)", credentials, re.IGNORECASE):
-        return credentials
-    else:
-        print("Something went wrong.")
+def validate_credentials(credential_type):
+    while True:
+        credentials = input(f"Enter your {credential_type}: ")
+        if re.fullmatch(r"([a-z0-9_]+)", credentials, re.IGNORECASE):
+            return credentials
+        else:
+            print(f"Invalid {credential_type}. Please use one or more characters, letters, numbers, or underscores only.")
     
 
 def create_new_user():
