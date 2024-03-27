@@ -84,16 +84,14 @@ def credentials_exist(db_manager, username, password=None):
         query = "SELECT username FROM users WHERE username = ? AND password = ?"
         params = [username, password]
     else:
-        # Check username only
         query = "SELECT username FROM users WHERE username = ?"
         params = [username]
     
     user = db_manager.execute_query(query, params)
     if user:
-        print(user)
         return True  # User exists (and, if provided, password matches)
     else:
-        print("Doesnt exist")
+        print("Incorrect username or password")
         return False  # User does not exist (or password does not match if provided)
 
 
