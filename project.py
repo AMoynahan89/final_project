@@ -8,38 +8,57 @@ class DatabaseManager:
         self.con = sqlite3.connect(self.db_name)
         self.cursor = self.con.cursor()
 
+    def execute_query(self, query, params=None):
+        if params:
+            self.cursor.execute(query, params)
+        else:
+            self.cursor.execute(query)
+        return self.cursor.fetchall()
+
+    def commit(self):
+        self.con.commit()
+
+    def close(self):
+        self.con.close()
+
 
 def main():
     db_manager = DatabaseManager("database/my_database.db")
+
     user_response = input("Do you have an account? (yes/no): ").lower()
     while user_response not in ["yes", "no"]:
         print("Please answer with 'yes' or 'no'.")
         user_response = input("Do you have an account? (yes/no): ").lower()
     
     if user_response == "yes":
-        login_user()
+        login_user(db_manager)
     else:
-        create_new_user()
+        create_new_user(db_manager)
 
+    #get_user_id(db_manager)
 
-def create_new_user():
+    db_manager.close()
+
+def create_new_user(db_manager):
     while True:
         print("Create New Account")
         username = validate_credentials("username")
         password = validate_credentials("password")
-        if not check_username_exists(username):
-            # Decided to create a DatabaseManager Class to deal with all of the SQL operations and be able to create a cursor object onece for the whole program
-            cursor.execute("INSERT INTO users (username, password) VALUES(?, ?)", (username, password))
+        if not check_username_exists(username, db_manager):
+            db_manager.execute_query("INSERT INTO users (username, password) VALUES(?, ?)", (username, password))
+            db_manager.commit()
+            print(db_manager.execute_query("SELECT username FROM users"))
+            break
 
 
-def login_user():
+def login_user(db_manager):
     while True:
         print("Log In")
         username = validate_credentials("username")
         password = validate_credentials("password")
-        if not check_username_exists(username):
-            # Decided to create a DatabaseManager Class to deal with all of the SQL operations and be able to create a cursor object onece for the whole program
-            cursor.execute("INSERT INTO users (username, password) VALUES(?, ?)", (username, password))
+        if check_username_exists(username, password db_manager):
+            db_manager.execute("INSERT INTO users (username, password) VALUES(?, ?)", (username, password))
+            break
 
 
 # Returns standardized username/password
@@ -52,11 +71,8 @@ def validate_credentials(credential_type):
             print(f"Invalid {credential_type}. Please use one or more characters, letters, numbers, or underscores only.")
 
 
-def check_username_exists(username):
-    with sqlite3.connect("my_database.db") as con:
-        cursor = con.cursor()
-        cursor.execute("SELECT username FROM users")
-        users = cursor.fetchall()
+def check_username_exists(username, db_manager):
+        users = db_manager.execute_query("SELECT username FROM users")
         usernames = [user[0] for user in users]
         if username in usernames:
             return True
@@ -74,6 +90,9 @@ def recall_user_data():
 
 if __name__ == "__main__":
     main()
+
+
+#print(db_manager.execute_query("SELECT username FROM users"))
 
 
 #Creates the "users" table.
@@ -121,4 +140,4 @@ if __name__ == "__main__":
 
 
 #Populates "users" table.
-cursor.execute("INSERT INTO users (username, password) VALUES('user1', 'password1')")
+#cursor.execute("INSERT INTO users (username, password) VALUES('user1', 'password1')")
