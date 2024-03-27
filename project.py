@@ -14,6 +14,27 @@ def main():
         create_new_user()
 
 
+def create_new_user():
+    while True:
+        print("Create New Account")
+        username = validate_credentials("username")
+        password = validate_credentials("password")
+        if not check_username_exists(username):
+            # Decided to create a DatabaseManager Class to deal with all of the SQL operations and be able to create a cursor object onece for the whole program
+            cursor.execute("INSERT INTO users (username, password) VALUES(?, ?)", (username, password))
+
+
+def login_user():
+    while True:
+        print("Log In")
+        username = validate_credentials("username")
+        password = validate_credentials("password")
+        if not check_username_exists(username):
+            # Decided to create a DatabaseManager Class to deal with all of the SQL operations and be able to create a cursor object onece for the whole program
+            cursor.execute("INSERT INTO users (username, password) VALUES(?, ?)", (username, password))
+
+
+# Returns standardized username/password
 def validate_credentials(credential_type):
     while True:
         credentials = input(f"Enter your {credential_type}: ")
@@ -21,50 +42,18 @@ def validate_credentials(credential_type):
             return credentials
         else:
             print(f"Invalid {credential_type}. Please use one or more characters, letters, numbers, or underscores only.")
-    
-
-def create_new_user():
-    print("Create New Account")
-    username = validate_credentials("username")
-    password = validate_credentials("password")
-    # Add code here to insert new user into database if they don't already exist
 
 
-def login_user():
-    print("Log In")
-    username = validate_credentials("username")
-    password = validate_credentials("password")
-    # Add code here to check if user credentials are already in database
-
-
-def add_new_user(username, password):
-    with sqlite3.connect("database/my_database.db") as con:
+def check_username_exists(username):
+    with sqlite3.connect("my_database.db") as con:
         cursor = con.cursor()
-        username = cursor.execute("SELECT username FROM users")
-        users = username.fetchall()
+        cursor.execute("SELECT username FROM users")
+        users = cursor.fetchall()
         usernames = [user[0] for user in users]
         if username in usernames:
-            print(f"{username} is a registered user.", end="")
+            return True
         else:
-            print(f"{username} is not a registered user.", end="")
-
-
-#def get_or_create_user(username, password):
-#    with sqlite3.connect("database/my_database.db") as con:
-#        cursor = con.cursor()
-#        cursor.execute("SELECT password FROM users WHERE username = ?", (username,))
-#        result = cursor.fetchone()
-#        if result:
-#            if result[0] == password:
-#                print(f"{username}, you are logged in!")
-                # Continue to the main program
-#            else:
-#                print("Incorrect password.")
-#        else:
-#            print(f"{username} does not exist. Creating account...")
-#            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
-#            con.commit()
-#            print("Account created. Please log in.")
+            return False
 
 
 def add_user_data():
@@ -103,3 +92,25 @@ if __name__ == "__main__":
             
 #result = cursor.execute("SELECT name FROM sqlite_master")
 #print(result.fetchall())
+    
+
+#def get_or_create_user(username, password):
+#    with sqlite3.connect("database/my_database.db") as con:
+#        cursor = con.cursor()
+#        cursor.execute("SELECT password FROM users WHERE username = ?", (username,))
+#        result = cursor.fetchone()
+#        if result:
+#            if result[0] == password:
+#                print(f"{username}, you are logged in!")
+                # Continue to the main program
+#            else:
+#                print("Incorrect password.")
+#        else:
+#            print(f"{username} does not exist. Creating account...")
+#            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+#            con.commit()
+#            print("Account created. Please log in.")
+
+
+#Populates "users" table.
+cursor.execute("INSERT INTO users (username, password) VALUES('user1', 'password1')")
