@@ -56,8 +56,8 @@ def login_user(db_manager):
         print("Log In")
         username = validate_credentials("username")
         password = validate_credentials("password")
-        if check_username_exists(username, password db_manager):
-            db_manager.execute("INSERT INTO users (username, password) VALUES(?, ?)", (username, password))
+        if credentials_exist(db_manager, username, password=None):
+            db_manager.execute_query("INSERT INTO users (username, password) VALUES(?, ?)", (username, password))
             break
 
 
@@ -71,13 +71,31 @@ def validate_credentials(credential_type):
             print(f"Invalid {credential_type}. Please use one or more characters, letters, numbers, or underscores only.")
 
 
-def check_username_exists(username, db_manager):
-        users = db_manager.execute_query("SELECT username FROM users")
-        usernames = [user[0] for user in users]
-        if username in usernames:
-            return True
-        else:
-            return False
+#def credentials_exist(username, db_manager):
+#        users = db_manager.execute_query("SELECT username FROM users")
+#        usernames = [user[0] for user in users]
+#        if username in usernames:
+#            return True
+#        else:
+#            return False
+        
+def credentials_exist(db_manager, username, password=None):
+    if password:
+        query = "SELECT username FROM users WHERE username = ? AND password = ?"
+        params = [username, password]
+    else:
+        # Check username only
+        query = "SELECT username FROM users WHERE username = ?"
+        params = [username]
+    
+    user = db_manager.execute_query(query, params)
+    if user:
+        print(user)
+        return True  # User exists (and, if provided, password matches)
+    else:
+        print("Doesnt exist")
+        return False  # User does not exist (or password does not match if provided)
+
 
 
 def add_user_data():
