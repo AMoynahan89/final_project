@@ -1,16 +1,6 @@
 import sqlite3
 import re
 
-"""
-1. existing user or not
-2.1 user exists, log in, load data and continue program(start ai chat)
-2.2 user does not exist, create user and continue program(start ai chat)
-3. add new user data if needed or recall existing data if needed.
-4. just chat with ai
-5. quit
-"""
-
-
 
 def main():
     user_response = input("Do you have an account? (yes/no): ").lower()
@@ -39,11 +29,15 @@ def create_new_user():
     password = validate_credentials("password")
     # Add code here to insert new user into database if they don't already exist
 
+
 def login_user():
-    pass
+    print("Log In")
+    username = validate_credentials("username")
+    password = validate_credentials("password")
+    # Add code here to check if user credentials are already in database
 
 
-def get_or_create_user(username, password):
+def add_new_user(username, password):
     with sqlite3.connect("database/my_database.db") as con:
         cursor = con.cursor()
         username = cursor.execute("SELECT username FROM users")
@@ -53,6 +47,24 @@ def get_or_create_user(username, password):
             print(f"{username} is a registered user.", end="")
         else:
             print(f"{username} is not a registered user.", end="")
+
+
+#def get_or_create_user(username, password):
+#    with sqlite3.connect("database/my_database.db") as con:
+#        cursor = con.cursor()
+#        cursor.execute("SELECT password FROM users WHERE username = ?", (username,))
+#        result = cursor.fetchone()
+#        if result:
+#            if result[0] == password:
+#                print(f"{username}, you are logged in!")
+                # Continue to the main program
+#            else:
+#                print("Incorrect password.")
+#        else:
+#            print(f"{username} does not exist. Creating account...")
+#            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+#            con.commit()
+#            print("Account created. Please log in.")
 
 
 def add_user_data():
