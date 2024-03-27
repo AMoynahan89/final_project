@@ -2,7 +2,15 @@ import sqlite3
 import re
 
 
+class DatabaseManager:
+    def __init__(self, db_name):
+        self.db_name = db_name
+        self.con = sqlite3.connect(self.db_name)
+        self.cursor = self.con.cursor()
+
+
 def main():
+    db_manager = DatabaseManager("database/my_database.db")
     user_response = input("Do you have an account? (yes/no): ").lower()
     while user_response not in ["yes", "no"]:
         print("Please answer with 'yes' or 'no'.")
