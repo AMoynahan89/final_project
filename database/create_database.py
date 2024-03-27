@@ -62,14 +62,13 @@ cursor = con.cursor()
 
 #con.commit()
 
-result = cursor.execute("SELECT name FROM sqlite_master")
-print(result.fetchall())
+#result = cursor.execute("SELECT name FROM sqlite_master")
+#print(result.fetchall())
 
-result = cursor.execute("SELECT user_id, username FROM Users")
-print(result.fetchall())
+#result = cursor.execute("SELECT user_id, username FROM Users")
+#print(result.fetchall())
 
-result = cursor.execute("SELECT user_id, question FROM question_answers")
-print(result.fetchall())
+#result = cursor.execute("SELECT user_id, question FROM question_answers")
+#print(result.fetchall())
 
-con.close()
-
+#con.close()
