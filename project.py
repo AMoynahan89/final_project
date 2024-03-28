@@ -54,7 +54,7 @@ def create_new_user(db_manager):
 #            print(db_manager.execute_query("SELECT username FROM users"))
             break
         else:
-            print
+            print(f"The username {username} is already taken. Please chose a different username.")
 
 
 def login_user(db_manager):
