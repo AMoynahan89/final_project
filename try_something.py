@@ -14,7 +14,7 @@ cursor = con.cursor()
 result = cursor.execute("SELECT user_id, username FROM Users")
 print(result.fetchall())
 
-result = cursor.execute("SELECT user_id, question FROM question_answers")
-print(result.fetchall())
+#result = cursor.execute("SELECT user_id, question FROM question_answers")
+#print(result.fetchall())
 
 con.close()
