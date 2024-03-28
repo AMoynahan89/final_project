@@ -24,7 +24,7 @@ class DatabaseManager:
 
 def main():
     db_manager = DatabaseManager("database/my_database.db")
-
+# Login
     user_response = input("Do you have an account? (yes/no): ").lower()
     while user_response not in ["yes", "no"]:
         print("Please answer with 'yes' or 'no'.")
@@ -34,9 +34,10 @@ def main():
         login_user(db_manager)
     else:
         create_new_user(db_manager)
-
-    #get_user_id(db_manager)
-
+# Main Functionality
+    #user id = get_user_id(db_manager)
+    #remember_something()
+    #recall_something()
     db_manager.close()
 
 def create_new_user(db_manager):
