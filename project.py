@@ -1,13 +1,14 @@
 import sqlite3
 import re
 
-
+# Creates a connection and curesor object which I can pass to functions that need access the database
 class DatabaseManager:
     def __init__(self, db_name):
         self.db_name = db_name
         self.con = sqlite3.connect(self.db_name)
         self.cursor = self.con.cursor()
-
+    
+    # A method to query the database
     def execute_query(self, query, params=None):
         if params:
             self.cursor.execute(query, params)
@@ -15,26 +16,28 @@ class DatabaseManager:
             self.cursor.execute(query)
         return self.cursor.fetchall()
 
+    # A method to commit to the database
     def commit(self):
         self.con.commit()
 
+    # A method to close the database
     def close(self):
         self.con.close()
 
 
 def main():
     db_manager = DatabaseManager("database/my_database.db")
-# Login
+    # Login
     user_response = input("Do you have an account? (yes/no): ").lower()
     while user_response not in ["yes", "no"]:
         print("Please answer with 'yes' or 'no'.")
         user_response = input("Do you have an account? (yes/no): ").lower()
-    
     if user_response == "yes":
         login_user(db_manager)
     else:
         create_new_user(db_manager)
-# Main Functionality
+
+    # Main Functionality
     #user id = get_user_id(db_manager)
     #remember_something()
     #recall_something()
@@ -45,11 +48,13 @@ def create_new_user(db_manager):
         print("Create New Account")
         username = validate_credentials("username")
         password = validate_credentials("password")
-        if not check_username_exists(username, db_manager):
+        if not credentials_exist(db_manager, username):
             db_manager.execute_query("INSERT INTO users (username, password) VALUES(?, ?)", (username, password))
             db_manager.commit()
-            print(db_manager.execute_query("SELECT username FROM users"))
+#            print(db_manager.execute_query("SELECT username FROM users"))
             break
+        else:
+            print
 
 
 def login_user(db_manager):
@@ -71,14 +76,6 @@ def validate_credentials(credential_type):
         else:
             print(f"Invalid {credential_type}. Please use one or more characters, letters, numbers, or underscores only.")
 
-
-#def credentials_exist(username, db_manager):
-#        users = db_manager.execute_query("SELECT username FROM users")
-#        usernames = [user[0] for user in users]
-#        if username in usernames:
-#            return True
-#        else:
-#            return False
         
 def credentials_exist(db_manager, username, password=None):
     if password:
@@ -92,16 +89,17 @@ def credentials_exist(db_manager, username, password=None):
     if user:
         return True  # User exists (and, if provided, password matches)
     else:
-        print("Incorrect username or password")
         return False  # User does not exist (or password does not match if provided)
 
 
 
-def add_user_data():
+
+
+def remember_something():
     pass
 
 
-def recall_user_data():
+def recall_something():
     pass
 
 
