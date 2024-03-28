@@ -25,8 +25,6 @@ class DatabaseManager:
         self.con.close()
 
 
-### Need to address case sensitivity issues between program and database. ###
-
 def main():
     db_manager = DatabaseManager("database/my_database.db")
     
@@ -39,7 +37,7 @@ def main():
         user = login_user(db_manager)
     else:
         user = create_new_user(db_manager)
-    print(user)
+    #print(user)
 
     # Main Functionality
     user_id = get_user_id(db_manager, user)
@@ -47,6 +45,7 @@ def main():
     #remember_something()
     #recall_something()
     db_manager.close()
+
 
 def create_new_user(db_manager):
     while True:
@@ -96,8 +95,9 @@ def credentials_exist(db_manager, username, password=None):
 
 
 def get_user_id(db_manager, user):
-    
-
+    print(user)
+    user_id = db_manager.execute_query("SELECT user_id FROM users WHERE username = ?", user)
+    return user_id
 
 def remember_something():
     pass
