@@ -96,7 +96,7 @@ def credentials_exist(db_manager, username, password=None):
 
 def get_user_id(db_manager, user):
     print(user)
-    user_id = db_manager.execute_query("SELECT user_id FROM users WHERE username = ?", user)
+    user_id = db_manager.execute_query("SELECT user_id FROM users WHERE username = ?", [user])
     return user_id
 
 def remember_something():
