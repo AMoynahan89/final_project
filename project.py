@@ -67,9 +67,10 @@ def login_user(db_manager):
         password = validate_credentials("password")
         if credentials_exist(db_manager, username, password):
             return username
+        #potentially else block with error message here
 
 
-# Returns standardized username/password
+# Assures credentials meet regex requirements. Returns users credentials
 def validate_credentials(credential_type):
     while True:
         credentials = input(f"Enter your {credential_type}: ")
@@ -78,7 +79,8 @@ def validate_credentials(credential_type):
         else:
             print(f"Invalid {credential_type}. Please use one or more characters, letters, numbers, or underscores only.")
 
-        
+
+# Checks if entered credentials are in the database already. Returns a Bool value.
 def credentials_exist(db_manager, username, password=None):
     if password:
         query = "SELECT username FROM users WHERE username = ? AND password = ?"
