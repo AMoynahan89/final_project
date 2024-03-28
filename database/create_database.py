@@ -5,6 +5,11 @@ con = sqlite3.connect("my_database.db")
 cursor = con.cursor()
 
 
+
+### Need to address case sensitivity issues between program and database. ###
+
+
+
 #Creates the "users" table.
 #cursor.execute("""
 #    CREATE TABLE users(
