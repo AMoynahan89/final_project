@@ -97,19 +97,18 @@ def credentials_exist(db_manager, username, password=None):
     else:
         return False  # User does not exist (or password does not match if provided)
 
-
+# Returns actual user_id as int, not a tuple
 def get_user_id(db_manager, user):
     print(user)
     user_id = db_manager.execute_query("SELECT user_id FROM users WHERE username = ?", [user])
-    return user_id
+    return user_id[0][0] # Ensure user_id[0][0] is used to extract the actual ID from the fetched result
 
 
 #Inserts question-answer pairs into database
 def save_data(db_manager, user_id):
     question = input("Enter your question: ")
     answer = input("Enter the answer: ")
-    # Ensure user_id[0][0] is used to extract the actual ID from the fetched result
-    db_manager.execute_query("INSERT INTO question_answers (user_id, question, answer) VALUES (?, ?, ?)", (user_id[0][0], question, answer))
+    db_manager.execute_query("INSERT INTO question_answers (user_id, question, answer) VALUES (?, ?, ?)", (user_id, question, answer))
     db_manager.commit()
 
 
