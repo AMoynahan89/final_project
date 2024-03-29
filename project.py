@@ -41,9 +41,10 @@ def main():
 
     # Main Functionality
     user_id = get_user_id(db_manager, user)
-    print(user_id)
-    #remember_something()
-    #recall_something()
+    #print(user_id)
+    save_data(user_id)
+    #search_data():
+    #just_chat()
     db_manager.close()
 
 
@@ -101,16 +102,24 @@ def get_user_id(db_manager, user):
     user_id = db_manager.execute_query("SELECT user_id FROM users WHERE username = ?", [user])
     return user_id
 
-def remember_something():
-    pass
-
-
-def recall_something():
-    pass
-
 
 if __name__ == "__main__":
     main()
+
+
+def save_data():
+
+
+#def search_data():
+
+
+#def just_chat():
+
+
+
+
+
+
 
 
 #print(db_manager.execute_query("SELECT username FROM users"))
@@ -137,28 +146,34 @@ if __name__ == "__main__":
 #""")
 
 #con.commit()
-            
+
+
+#Populates "question_answers" table.
+#cursor.execute("""
+#    INSERT INTO question_answers (user_id, question, answer) VALUES
+#    (1, 'Where did you grow up?', 'New York'),
+#    (1, 'How many siblings do you have?', '2'),
+#    (1, 'What is your favorite hobby?', 'Reading'),
+#    (2, 'Where did you grow up?', 'Los Angeles'),
+#    (2, 'How many siblings do you have?', '1'),
+#    (2, 'What is your favorite hobby?', 'Cooking'),
+#    (3, 'Where did you grow up?', 'Chicago'),
+#    (3, 'How many siblings do you have?', '3'),
+#    (3, 'What is your favorite hobby?', 'Gardening'),
+#    (4, 'Where did you grow up?', 'Houston'),
+#    (4, 'How many siblings do you have?', '4'),
+#    (4, 'What is your favorite hobby?', 'Painting'),
+#    (5, 'Where did you grow up?', 'Miami'),
+#    (5, 'How many siblings do you have?', '0'),
+#    (5, 'What is your favorite hobby?', 'Playing guitar')
+#""")
+
+#con.commit()
+
+
 #result = cursor.execute("SELECT name FROM sqlite_master")
 #print(result.fetchall())
     
-
-#def get_or_create_user(username, password):
-#    with sqlite3.connect("database/my_database.db") as con:
-#        cursor = con.cursor()
-#        cursor.execute("SELECT password FROM users WHERE username = ?", (username,))
-#        result = cursor.fetchone()
-#        if result:
-#            if result[0] == password:
-#                print(f"{username}, you are logged in!")
-                # Continue to the main program
-#            else:
-#                print("Incorrect password.")
-#        else:
-#            print(f"{username} does not exist. Creating account...")
-#            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
-#            con.commit()
-#            print("Account created. Please log in.")
-
 
 #Populates "users" table.
 #cursor.execute("INSERT INTO users (username, password) VALUES('user1', 'password1')")
