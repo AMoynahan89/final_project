@@ -112,11 +112,18 @@ def save_data(db_manager, user_id):
     db_manager.commit()
 
 
+def search_data(db_manager, user_id):
+    question = input("Enter your question: ")
+    db_manager.execute_query("SELECT answer FROM question_answers WHERE user_id = ? AND question = ?", (user_id, question)
+
+
 if __name__ == "__main__":
     main()
 
 
-#def search_data(db_manager, user_id):
+def search_data(db_manager, user_id):
+    question = input("Enter your question: ")
+    db_manager.execute_query("SELECT answer FROM question_answers WHERE user_id = ? AND question = ?")
 
 
 #def just_chat():
