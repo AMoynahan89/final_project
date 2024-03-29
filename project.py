@@ -27,7 +27,8 @@ class DatabaseManager:
 
 def main():
     db_manager = DatabaseManager("database/my_database.db")
-    
+    #Create Menu
+
     # Login
     user_response = input("Do you have an account? (yes/no): ").lower()
     while user_response not in ["yes", "no"]:
@@ -41,9 +42,9 @@ def main():
 
     # Main Functionality
     user_id = get_user_id(db_manager, user)
-    #print(user_id)
-    save_data(user_id)
-    #search_data():
+    print(user_id)
+    #save_data(db_manager, user_id)
+    #search_data(db_manager, user_id):
     #just_chat()
     db_manager.close()
 
@@ -103,14 +104,20 @@ def get_user_id(db_manager, user):
     return user_id
 
 
+#Inserts question-answer pairs into database
+def save_data(db_manager, user_id):
+    question = input("Enter your question: ")
+    answer = input("Enter the answer: ")
+    # Ensure user_id[0][0] is used to extract the actual ID from the fetched result
+    db_manager.execute_query("INSERT INTO question_answers (user_id, question, answer) VALUES (?, ?, ?)", (user_id[0][0], question, answer))
+    db_manager.commit()
+
+
 if __name__ == "__main__":
     main()
 
 
-def save_data():
-
-
-#def search_data():
+#def search_data(db_manager, user_id):
 
 
 #def just_chat():
@@ -144,32 +151,7 @@ def save_data():
 #    ('user4', 'password4'),
 #    ('user5', 'password5')
 #""")
-
-#con.commit()
-
-
-#Populates "question_answers" table.
-#cursor.execute("""
-#    INSERT INTO question_answers (user_id, question, answer) VALUES
-#    (1, 'Where did you grow up?', 'New York'),
-#    (1, 'How many siblings do you have?', '2'),
-#    (1, 'What is your favorite hobby?', 'Reading'),
-#    (2, 'Where did you grow up?', 'Los Angeles'),
-#    (2, 'How many siblings do you have?', '1'),
-#    (2, 'What is your favorite hobby?', 'Cooking'),
-#    (3, 'Where did you grow up?', 'Chicago'),
-#    (3, 'How many siblings do you have?', '3'),
-#    (3, 'What is your favorite hobby?', 'Gardening'),
-#    (4, 'Where did you grow up?', 'Houston'),
-#    (4, 'How many siblings do you have?', '4'),
-#    (4, 'What is your favorite hobby?', 'Painting'),
-#    (5, 'Where did you grow up?', 'Miami'),
-#    (5, 'How many siblings do you have?', '0'),
-#    (5, 'What is your favorite hobby?', 'Playing guitar')
-#""")
-
-#con.commit()
-
+    
 
 #result = cursor.execute("SELECT name FROM sqlite_master")
 #print(result.fetchall())
