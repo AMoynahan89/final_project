@@ -27,33 +27,19 @@ class DatabaseManager:
 
 def main():
     db_manager = DatabaseManager("database/my_database.db")
-    question = "Are you a carteaker? (yes/no): "
-    user_response = yes_or_no(question)
-    print(user_response)
-   
-    # User interface menu
-    while True:
-        print("\nHow can I help you?")
-        print("1. Ask a question")
-        print("2. Just chat")
-        print("3. Exit")
-        choice = input("Enter your choice: ")
-        
-        if choice == "1":
-            pass
-        elif choice == "2":
-            pass
-        elif choice == "3":
-            break
-        else:
-            continue
-
+    
     # Login
-    user_response = yes_or_no("Do you have an account? (yes/no): ")
+    user_response = yes_or_no("\nDo you have an account? (yes/no): ")
     if user_response == "yes":
         user = login_user(db_manager)
     else:
         user = create_new_user(db_manager)
+    
+    user_response = yes_or_no("\nAre you a carteaker? (yes/no): ")
+    if user_response == "yes":
+        administrator_menu()
+    else:
+        user_menu()
 
     # Main Functionality
     user_id = get_user_id(db_manager, user)
@@ -69,6 +55,25 @@ def yes_or_no(question):
         print("Please answer with 'yes' or 'no'.")
         user_response = input(question).lower()
     return user_response
+
+def administrator_menu():
+    # Administrator interface menu
+    while True:
+        print("\nHow can I help you?")
+        print("1. Enter important information about patient.")
+        print("2. Edit existing information about patient")
+        print("3. Activity Log")
+        print("4. Go back")
+        choice = input("Enter your choice: ")
+        
+        if choice == "1":
+            pass
+        elif choice == "2":
+            pass
+        elif choice == "3":
+            break
+        else:
+            continue
 
 
 def create_new_user(db_manager):
