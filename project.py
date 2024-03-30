@@ -67,26 +67,6 @@ def administrator_menu():
         choice = input("Enter your choice: ")
         
         if choice == "1":
-            pass
-        elif choice == "2":
-            pass
-        elif choice == "3":
-            break
-        else:
-            continue
-
-
-# User interface menu
-def user_menu():
-    while True:
-        print("\nHow can I help you?")
-        print("1. Enter important information about patient.")
-        print("2. Edit existing information about patient.")
-        print("3. Activity Log")
-        print("4. Go back")
-        choice = input("Enter your choice: ")
-        
-        if choice == "1":
             save_data(db_manager, user_id)
         elif choice == "2":
             pass
@@ -94,6 +74,29 @@ def user_menu():
             log_activity()
         elif choice == "4":
             break
+        else:
+            continue
+
+
+
+# User interface menu
+def user_menu():
+    while True:
+        print("\nHow can I help you?")
+        print("1. I have a question.")
+        print("2. Please, tell me how I got here.")
+        print("3. Just chat.")
+        print("4. Exit.")
+        choice = input("Enter your choice: ")
+        
+        if choice == "1":
+            pass
+        elif choice == "2":
+            #summarize_user_data()
+        elif choice == "3":
+            #just_chat()
+        elif choice == "4":
+            quit
         else:
             continue
 
@@ -139,6 +142,7 @@ def save_data(db_manager, user_id):
     db_manager.commit()
 
 
+# Keep track of repedative behaviours
 def log_activity():
     pass
 
@@ -146,6 +150,11 @@ def log_activity():
 def search_data(db_manager, user_id):
     question = input("Enter your question: ")
     db_manager.execute_query("SELECT answer FROM question_answers WHERE user_id = ? AND question = ?", (user_id, question))
+
+
+#good start
+def summarize_user_data():
+    pass
 
 
 def main():
@@ -167,7 +176,6 @@ def main():
     # Main Functionality
     user_id = get_user_id(db_manager, user)
     print(user_id)
-    #save_data(db_manager, user_id)
     #search_data(db_manager, user_id):
     #just_chat()
     db_manager.close()
