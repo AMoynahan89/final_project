@@ -29,6 +29,20 @@ def main():
     db_manager = DatabaseManager("database/my_database.db")
     #Create Menu
 
+    while True:
+        # User interface menu
+        print("\nHow can I help you?")
+        print("1. Save a memory")
+        print("2. Ask a question")
+        print("3. Just chat")
+        print("4. Exit")
+        choice = input("Enter your choice: ")
+        
+        if choice == "4":
+            break
+        else:
+            continue
+
     # Login
     user_response = input("Do you have an account? (yes/no): ").lower()
     while user_response not in ["yes", "no"]:
@@ -114,7 +128,7 @@ def save_data(db_manager, user_id):
 
 def search_data(db_manager, user_id):
     question = input("Enter your question: ")
-    db_manager.execute_query("SELECT answer FROM question_answers WHERE user_id = ? AND question = ?", (user_id, question)
+    db_manager.execute_query("SELECT answer FROM question_answers WHERE user_id = ? AND question = ?", (user_id, question))
 
 
 if __name__ == "__main__":
