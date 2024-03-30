@@ -32,6 +32,30 @@ def yes_or_no(question):
         user_response = input(question).lower()
     return user_response
 
+
+def login_user(db_manager):
+    while True:
+        print("Log In")
+        username = validate_credentials("username")
+        password = validate_credentials("password")
+        if credentials_exist(db_manager, username, password):
+            return username
+        #potentially else block with error message here
+
+
+def create_new_user(db_manager):
+    while True:
+        print("Create New Account")
+        username = validate_credentials("username")
+        password = validate_credentials("password")
+        if not credentials_exist(db_manager, username):
+            db_manager.execute_query("INSERT INTO users (username, password) VALUES(?, ?)", (username, password))
+            db_manager.commit()
+            return username
+        else:
+            print(f"The username {username} is already taken. Please chose a different username.")
+
+
 def administrator_menu():
     # Administrator interface menu
     while True:
@@ -50,29 +74,6 @@ def administrator_menu():
             break
         else:
             continue
-
-
-def create_new_user(db_manager):
-    while True:
-        print("Create New Account")
-        username = validate_credentials("username")
-        password = validate_credentials("password")
-        if not credentials_exist(db_manager, username):
-            db_manager.execute_query("INSERT INTO users (username, password) VALUES(?, ?)", (username, password))
-            db_manager.commit()
-            return username
-        else:
-            print(f"The username {username} is already taken. Please chose a different username.")
-
-
-def login_user(db_manager):
-    while True:
-        print("Log In")
-        username = validate_credentials("username")
-        password = validate_credentials("password")
-        if credentials_exist(db_manager, username, password):
-            return username
-        #potentially else block with error message here
 
 
 # Assures credentials meet regex requirements. Returns users credentials
