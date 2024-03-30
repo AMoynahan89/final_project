@@ -56,8 +56,8 @@ def create_new_user(db_manager):
             print(f"The username {username} is already taken. Please chose a different username.")
 
 
+# Administrator interface menu
 def administrator_menu():
-    # Administrator interface menu
     while True:
         print("\nHow can I help you?")
         print("1. Enter important information about patient.")
@@ -71,6 +71,28 @@ def administrator_menu():
         elif choice == "2":
             pass
         elif choice == "3":
+            break
+        else:
+            continue
+
+
+# User interface menu
+def user_menu():
+    while True:
+        print("\nHow can I help you?")
+        print("1. Enter important information about patient.")
+        print("2. Edit existing information about patient.")
+        print("3. Activity Log")
+        print("4. Go back")
+        choice = input("Enter your choice: ")
+        
+        if choice == "1":
+            save_data(db_manager, user_id)
+        elif choice == "2":
+            pass
+        elif choice == "3":
+            log_activity()
+        elif choice == "4":
             break
         else:
             continue
@@ -101,6 +123,7 @@ def credentials_exist(db_manager, username, password=None):
     else:
         return False  # User does not exist (or password does not match if provided)
 
+
 # Returns actual user_id as int, not a tuple
 def get_user_id(db_manager, user):
     print(user)
@@ -114,6 +137,10 @@ def save_data(db_manager, user_id):
     answer = input("Enter the answer: ")
     db_manager.execute_query("INSERT INTO question_answers (user_id, question, answer) VALUES (?, ?, ?)", (user_id, question, answer))
     db_manager.commit()
+
+
+def log_activity():
+    pass
 
 
 def search_data(db_manager, user_id):
