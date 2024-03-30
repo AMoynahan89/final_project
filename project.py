@@ -57,7 +57,7 @@ def create_new_user(db_manager):
 
 
 # Administrator interface menu
-def administrator_menu():
+def administrator_menu(db_manager,user_id):
     while True:
         print("\nHow can I help you?")
         print("1. Enter important information about patient.")
@@ -173,13 +173,15 @@ def main():
     
     user_response = yes_or_no("\nAre you a carteaker? (yes/no): ")
     if user_response == "yes":
-        administrator_menu()
+        user_id = get_user_id(db_manager, user)
+        #print(user_id)
+        administrator_menu(db_manager, user_id)
     else:
-        user_menu()
+        user_id = get_user_id(db_manager, user)
+        #print(user_id)
+        user_menu(db_manager, user_id)
 
     # Main Functionality
-    user_id = get_user_id(db_manager, user)
-    print(user_id)
     #search_data(db_manager, user_id):
     #just_chat()
     db_manager.close()
