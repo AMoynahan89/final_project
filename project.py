@@ -27,32 +27,33 @@ class DatabaseManager:
 
 def main():
     db_manager = DatabaseManager("database/my_database.db")
-    #Create Menu
-
+    question = "Are you a carteaker? (yes/no): "
+    user_response = yes_or_no(question)
+    print(user_response)
+   
+    # User interface menu
     while True:
-        # User interface menu
         print("\nHow can I help you?")
-        print("1. Save a memory")
-        print("2. Ask a question")
-        print("3. Just chat")
-        print("4. Exit")
+        print("1. Ask a question")
+        print("2. Just chat")
+        print("3. Exit")
         choice = input("Enter your choice: ")
         
-        if choice == "4":
+        if choice == "1":
+            pass
+        elif choice == "2":
+            pass
+        elif choice == "3":
             break
         else:
             continue
 
     # Login
-    user_response = input("Do you have an account? (yes/no): ").lower()
-    while user_response not in ["yes", "no"]:
-        print("Please answer with 'yes' or 'no'.")
-        user_response = input("Do you have an account? (yes/no): ").lower()
+    user_response = yes_or_no("Do you have an account? (yes/no): ")
     if user_response == "yes":
         user = login_user(db_manager)
     else:
         user = create_new_user(db_manager)
-    #print(user)
 
     # Main Functionality
     user_id = get_user_id(db_manager, user)
@@ -61,6 +62,13 @@ def main():
     #search_data(db_manager, user_id):
     #just_chat()
     db_manager.close()
+
+def yes_or_no(question):
+    user_response = input(question).lower()
+    while user_response not in ["yes", "no"]:
+        print("Please answer with 'yes' or 'no'.")
+        user_response = input(question).lower()
+    return user_response
 
 
 def create_new_user(db_manager):
