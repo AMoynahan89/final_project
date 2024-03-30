@@ -25,30 +25,6 @@ class DatabaseManager:
         self.con.close()
 
 
-def main():
-    db_manager = DatabaseManager("database/my_database.db")
-    
-    # Login
-    user_response = yes_or_no("\nDo you have an account? (yes/no): ")
-    if user_response == "yes":
-        user = login_user(db_manager)
-    else:
-        user = create_new_user(db_manager)
-    
-    user_response = yes_or_no("\nAre you a carteaker? (yes/no): ")
-    if user_response == "yes":
-        administrator_menu()
-    else:
-        user_menu()
-
-    # Main Functionality
-    user_id = get_user_id(db_manager, user)
-    print(user_id)
-    #save_data(db_manager, user_id)
-    #search_data(db_manager, user_id):
-    #just_chat()
-    db_manager.close()
-
 def yes_or_no(question):
     user_response = input(question).lower()
     while user_response not in ["yes", "no"]:
@@ -144,22 +120,38 @@ def search_data(db_manager, user_id):
     db_manager.execute_query("SELECT answer FROM question_answers WHERE user_id = ? AND question = ?", (user_id, question))
 
 
+def main():
+    db_manager = DatabaseManager("database/my_database.db")
+    
+    # Login
+    user_response = yes_or_no("\nDo you have an account? (yes/no): ")
+    if user_response == "yes":
+        user = login_user(db_manager)
+    else:
+        user = create_new_user(db_manager)
+    
+    user_response = yes_or_no("\nAre you a carteaker? (yes/no): ")
+    if user_response == "yes":
+        administrator_menu()
+    else:
+        user_menu()
+
+    # Main Functionality
+    user_id = get_user_id(db_manager, user)
+    print(user_id)
+    #save_data(db_manager, user_id)
+    #search_data(db_manager, user_id):
+    #just_chat()
+    db_manager.close()
+
+
+
 if __name__ == "__main__":
     main()
 
 
-def search_data(db_manager, user_id):
-    question = input("Enter your question: ")
-    db_manager.execute_query("SELECT answer FROM question_answers WHERE user_id = ? AND question = ?")
-
 
 #def just_chat():
-
-
-
-
-
-
 
 
 #print(db_manager.execute_query("SELECT username FROM users"))
