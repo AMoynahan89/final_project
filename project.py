@@ -92,9 +92,9 @@ def user_menu():
         if choice == "1":
             pass
         elif choice == "2":
-            #summarize_user_data()
+            summarize_user_data()
         elif choice == "3":
-            #just_chat()
+            just_chat()
         elif choice == "4":
             quit
         else:
@@ -157,6 +157,10 @@ def summarize_user_data():
     pass
 
 
+def just_chat():
+    pass
+
+
 def main():
     db_manager = DatabaseManager("database/my_database.db")
     
@@ -185,9 +189,6 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-
-#def just_chat():
 
 
 #print(db_manager.execute_query("SELECT username FROM users"))
