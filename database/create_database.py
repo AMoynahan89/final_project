@@ -76,4 +76,7 @@ cursor = con.cursor()
 #result = cursor.execute("SELECT user_id, question FROM question_answers")
 #print(result.fetchall())
 
-#con.close()
+result = cursor.execute("SELECT user_id, answer FROM question_answers")
+print(result.fetchall())
+
+con.close()
