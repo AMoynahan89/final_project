@@ -8,7 +8,7 @@ import re
 class DatabaseManager:
     def __init__(self, db_name):
         self.db_name = db_name
-        self.con = sqlite3.connect(self.db_name)
+        self.con = sqlite3.connect(self.db_name, check_same_thread=False) # check_same_thread=False allows database operations to work on flasks development server
         self.cursor = self.con.cursor()
     
     # A method to query the database
@@ -28,6 +28,10 @@ class DatabaseManager:
         self.con.close()
 
 
+
+
+
+"""
 ### Authentication Class/Methods ###
 #class UserAuthentication:
 def login_user(db_manager):
@@ -38,6 +42,15 @@ def login_user(db_manager):
         if credentials_exist(db_manager, username, password):
             return username
         #potentially else block with error message here
+"""
+
+
+
+
+
+
+
+
 
 
 def create_new_user(db_manager):
