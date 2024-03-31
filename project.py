@@ -147,7 +147,8 @@ def user_menu(db_manager, user_id):
         choice = input("Enter your choice: ")
         
         if choice == "1":
-            answer_question(db_manager, user_id)
+            answer = answer_question(db_manager, user_id)
+            print(answer)
         elif choice == "2":
             summarize_user_data(db_manager, user_id)
         elif choice == "3":
@@ -157,11 +158,11 @@ def user_menu(db_manager, user_id):
         else:
             continue
 
-
+# Answers users questions if that question is in the database. Input must be verbatim
 def answer_question(db_manager, user_id):
     question = input("Enter your question: ")
-    db_manager.execute_query("SELECT answer FROM question_answers WHERE user_id = ? AND question = ?", (user_id, question))
-
+    answer = db_manager.execute_query("SELECT answer FROM question_answers WHERE user_id = ? AND question = ?", (user_id, question))
+    return answer[0][0]
 
 
 #good start
