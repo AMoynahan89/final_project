@@ -1,7 +1,10 @@
 import sqlite3
 import re
 
-# Creates a connection and curesor object which I can pass to functions that need access the database
+
+### Dtabase functionality ###
+
+# Class for managing all database functionality
 class DatabaseManager:
     def __init__(self, db_name):
         self.db_name = db_name
@@ -25,6 +28,9 @@ class DatabaseManager:
         self.con.close()
 
 
+### Authentication Functions ###
+
+# Loop expecting a "yes" or "no"
 def yes_or_no(question):
     user_response = input(question).lower()
     while user_response not in ["yes", "no"]:
@@ -54,51 +60,6 @@ def create_new_user(db_manager):
             return username
         else:
             print(f"The username {username} is already taken. Please chose a different username.")
-
-
-# Administrator interface menu
-def administrator_menu(db_manager,user_id):
-    while True:
-        print("\nHow can I help you?")
-        print("1. Enter important information about patient.")
-        print("2. Edit existing information about patient")
-        print("3. Activity Log")
-        print("4. Go back")
-        choice = input("Enter your choice: ")
-        
-        if choice == "1":
-            save_data(db_manager, user_id)
-        elif choice == "2":
-            pass
-        elif choice == "3":
-            log_activity()
-        elif choice == "4":
-            break
-        else:
-            continue
-
-
-
-# User interface menu
-def user_menu():
-    while True:
-        print("\nHow can I help you?")
-        print("1. I have a question.")
-        print("2. Please, tell me how I got here.")
-        print("3. Just chat.")
-        print("4. Exit.")
-        choice = input("Enter your choice: ")
-        
-        if choice == "1":
-            pass
-        elif choice == "2":
-            summarize_user_data()
-        elif choice == "3":
-            just_chat()
-        elif choice == "4":
-            quit
-        else:
-            continue
 
 
 # Assures credentials meet regex requirements. Returns users credentials
@@ -134,17 +95,65 @@ def get_user_id(db_manager, user):
     return user_id[0][0] # Ensure user_id[0][0] is used to extract the actual ID from the fetched result
 
 
+### Admin functionality ###
+    
+# Administrator interface menu
+def administrator_menu(db_manager,user_id):
+    while True:
+        print("\nHow can I help you?")
+        print("1. Enter important information about patient.")
+        print("2. Edit existing information about patient")
+        print("3. Activity Log")
+        print("4. Go back")
+        choice = input("Enter your choice: ")
+        
+        if choice == "1":
+            enter_new_data(db_manager, user_id)
+        elif choice == "2":
+            pass
+        elif choice == "3":
+            log_activity()
+        elif choice == "4":
+            break
+        else:
+            continue
+
+
 #Inserts question-answer pairs into database
-def save_data(db_manager, user_id):
+def enter_new_data(db_manager, user_id):
     question = input("Enter your question: ")
     answer = input("Enter the answer: ")
     db_manager.execute_query("INSERT INTO question_answers (user_id, question, answer) VALUES (?, ?, ?)", (user_id, question, answer))
     db_manager.commit()
 
 
-# Keep track of repedative behaviours
+# Keep track of repedative/interesting behaviours(a question that is asked often)
 def log_activity():
     pass
+
+
+### User Functionality ###
+
+# User interface menu
+def user_menu(db_manager, user_id):
+    while True:
+        print("\nHow can I help you?")
+        print("1. I have a question.")
+        print("2. Please, tell me how I got here.")
+        print("3. Just chat.")
+        print("4. Exit.")
+        choice = input("Enter your choice: ")
+        
+        if choice == "1":
+            answer_question()
+        elif choice == "2":
+            summarize_user_data()
+        elif choice == "3":
+            just_chat()
+        elif choice == "4":
+            quit
+        else:
+            continue
 
 
 def search_data(db_manager, user_id):
@@ -223,3 +232,4 @@ if __name__ == "__main__":
 
 #Populates "users" table.
 #cursor.execute("INSERT INTO users (username, password) VALUES('user1', 'password1')")
+#enter_new_data
