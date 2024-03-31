@@ -101,8 +101,8 @@ def administrator_menu(db_manager,user_id):
     while True:
         print("\nHow can I help you?")
         print("(1) Enter important information about patient.")
-        print("(2) Edit existing information about patient.")
-        print("(3) Make note of behaviors you would like to track.")
+        #print("(2) Edit existing information about patient.")
+        #print("(3) Make note of behaviors you would like to track.")
         print("(4) Exit.")
         choice = input("Enter your choice: ")
         
@@ -141,8 +141,8 @@ def user_menu(db_manager, user_id):
     while True:
         print("\nHow can I help you?")
         print("(1) I have a question.")
-        print("(2) What do you know about me?")
-        print("(3) Just chat.")
+        #print("(2) What do you know about me?")
+        #print("(3) Just chat.")
         print("(4) Exit.")
         choice = input("Enter your choice: ")
         
