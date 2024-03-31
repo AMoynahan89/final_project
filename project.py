@@ -109,7 +109,7 @@ def administrator_menu(db_manager,user_id):
         if choice == "1":
             enter_new_data(db_manager, user_id)
         elif choice == "2":
-            display_data()
+            display_user_data()
         elif choice == "3":
             log_activity(db_manager, user_id)
         elif choice == "4":
@@ -126,7 +126,7 @@ def enter_new_data(db_manager, user_id):
     db_manager.commit()
 
 
-def display_data():
+def display_user_data():
     pass
 
 
