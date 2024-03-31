@@ -101,7 +101,7 @@ def administrator_menu(db_manager,user_id):
     while True:
         print("\nHow can I help you?")
         print("(1) Enter important information about patient.")
-        #print("(2) Edit existing information about patient.")
+        #print("(2) Display patient info.")
         #print("(3) Make note of behaviors you would like to track.")
         print("(4) Exit.")
         choice = input("Enter your choice: ")
@@ -109,7 +109,7 @@ def administrator_menu(db_manager,user_id):
         if choice == "1":
             enter_new_data(db_manager, user_id)
         elif choice == "2":
-            pass
+            display_data()
         elif choice == "3":
             log_activity(db_manager, user_id)
         elif choice == "4":
@@ -124,6 +124,10 @@ def enter_new_data(db_manager, user_id):
     answer = input("Enter the answer: ")
     db_manager.execute_query("INSERT INTO question_answers (user_id, question, answer) VALUES (?, ?, ?)", (user_id, question, answer))
     db_manager.commit()
+
+
+def display_data():
+    pass
 
 
 # Keep track of a repedative/interesting behaviour(often asked questions)
