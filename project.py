@@ -28,17 +28,8 @@ class DatabaseManager:
         self.con.close()
 
 
-### Authentication Functions ###
-
-# Loop expecting a "yes" or "no"
-def yes_or_no(question):
-    user_response = input(question).lower()
-    while user_response not in ["yes", "no"]:
-        print("Please answer with 'yes' or 'no'.")
-        user_response = input(question).lower()
-    return user_response
-
-
+### Authentication Class/Methods ###
+#class UserAuthentication:
 def login_user(db_manager):
     while True:
         print("Log In")
@@ -90,21 +81,29 @@ def credentials_exist(db_manager, username, password=None):
 
 # Returns actual user_id as int, not a tuple
 def get_user_id(db_manager, user):
-    print(user)
     user_id = db_manager.execute_query("SELECT user_id FROM users WHERE username = ?", [user])
     return user_id[0][0] # Ensure user_id[0][0] is used to extract the actual ID from the fetched result
 
 
-### Admin functionality ###
+# Loop expecting a "yes" or "no"
+def yes_or_no(question):
+    user_response = input(question).lower()
+    while user_response not in ["yes", "no"]:
+        print("Please answer with 'yes' or 'no'.")
+        user_response = input(question).lower()
+    return user_response
+
+
+### Admin Functionality Class/Methods ###
     
 # Administrator interface menu
 def administrator_menu(db_manager,user_id):
     while True:
         print("\nHow can I help you?")
-        print("1. Enter important information about patient.")
-        print("2. Edit existing information about patient")
-        print("3. Activity Log")
-        print("4. Go back")
+        print("(1) Enter important information about patient.")
+        print("(2) Edit existing information about patient.")
+        print("(3) Make note of behaviors you would like to track.")
+        print("(4) Exit.")
         choice = input("Enter your choice: ")
         
         if choice == "1":
@@ -112,9 +111,9 @@ def administrator_menu(db_manager,user_id):
         elif choice == "2":
             pass
         elif choice == "3":
-            log_activity()
+            log_activity(db_manager, user_id)
         elif choice == "4":
-            break
+            quit()
         else:
             continue
 
@@ -127,38 +126,42 @@ def enter_new_data(db_manager, user_id):
     db_manager.commit()
 
 
-# Keep track of repedative/interesting behaviours(a question that is asked often)
-def log_activity():
-    pass
+# Keep track of a repedative/interesting behaviour(often asked questions)
+def log_activity(db_manager, user_id):
+    activity = input("Enter whatever you would like to make note of: ")
+    # Need to create this table
+    db_manager.execute_query("INSERT INTO activity_log (username, password) VALUES(?, ?)", (user_id, activity))
+    db_manager.commit()
 
 
-### User Functionality ###
+### User Functionality Class/Methods ###
 
 # User interface menu
 def user_menu(db_manager, user_id):
     while True:
         print("\nHow can I help you?")
-        print("1. I have a question.")
-        print("2. Please, tell me how I got here.")
-        print("3. Just chat.")
-        print("4. Exit.")
+        print("(1) I have a question.")
+        print("(2) What do you know about me?")
+        print("(3) Just chat.")
+        print("(4) Exit.")
         choice = input("Enter your choice: ")
         
         if choice == "1":
-            answer_question()
+            answer_question(db_manager, user_id)
         elif choice == "2":
-            summarize_user_data()
+            summarize_user_data(db_manager, user_id)
         elif choice == "3":
             just_chat()
         elif choice == "4":
-            quit
+            quit()
         else:
             continue
 
 
-def search_data(db_manager, user_id):
+def answer_question(db_manager, user_id):
     question = input("Enter your question: ")
     db_manager.execute_query("SELECT answer FROM question_answers WHERE user_id = ? AND question = ?", (user_id, question))
+
 
 
 #good start
