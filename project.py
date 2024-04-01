@@ -30,6 +30,8 @@ class DatabaseManager:
 
 ### Authentication Class/Methods ###
 #class UserAuthentication:
+#    def __init__(self, db_manager
+
 def login_user(db_manager):
     while True:
         print("Log In")
