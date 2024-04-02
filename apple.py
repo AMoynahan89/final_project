@@ -75,3 +75,7 @@ db_manager = DatabaseManager("database/my_database.db")
 
 if __name__ == "__main__":
     app.run(debug=True)  # Added 'debug=True' for development convenience
+
+
+
+######### $ flask --app (app name) run
