@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Our Application</title>
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="header">
+    <h1>Welcome to Our Application</h1>
+    <p>Get started by logging in or learning more about us.</p>
+</div>
+
+<div class="nav">
+    <a href="/">Home</a>
+    <a href="/login">Login</a>
+<!--<a href="/about">About Us</a>-->
+</div>
+
+<div class="content">
+    <h2>Getting Started</h2>
+    <p>This is a basic Flask application. Use the navigation links to move around the application.</p>
+    <p>Don't have an account? You can <a href="/login">register here</a>.</p>
+</div>
+
+</body>
+</html>
