@@ -29,9 +29,17 @@ class DatabaseManager:
 
 
 ### Authentication Class/Methods ###
-#class UserAuthentication:
-    #def __init__(self, db_manager, username, password)
+class UserProfile:
+    def __init__(self, name, password, db_manager):
+        self._name = name
+        self._password = password
+        self.db_manager = db_manager
+        self.user_id = ""
 
+
+#    def get_credentials(self)
+
+"""
 def login_user(db_manager):
     while True:
         print("Log In")
@@ -85,16 +93,8 @@ def credentials_exist(db_manager, username, password=None):
 def get_user_id(db_manager, user):
     user_id = db_manager.execute_query("SELECT user_id FROM users WHERE username = ?", [user])
     return user_id[0][0] # Ensure user_id[0][0] is used to extract the actual ID from the fetched result
-
-
-# Loop expecting a "yes" or "no"
-def yes_or_no(question):
-    user_response = input(question).lower()
-    while user_response not in ["yes", "no"]:
-        print("Please answer with 'yes' or 'no'.")
-        user_response = input(question).lower()
-    return user_response
-
+"""
+    
 
 ### Admin Functionality Class/Methods ###
     
@@ -180,6 +180,15 @@ def just_chat():
     pass
 
 
+# Loop expecting a "yes" or "no"
+def yes_or_no(question):
+    user_response = input(question).lower()
+    while user_response not in ["yes", "no"]:
+        print("Please answer with 'yes' or 'no'.")
+        user_response = input(question).lower()
+    return user_response
+
+
 def main():
     db_manager = DatabaseManager("database/my_database.db")
     
@@ -209,3 +218,37 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+#print(db_manager.execute_query("SELECT username FROM users"))
+
+
+#Creates the "users" table.
+#cursor.execute("""
+#    CREATE TABLE users(
+#    user_id INTEGER PRIMARY KEY,
+#    username TEXT NOT NULL,
+#    password TEXT NOT NULL
+#    )
+#""")
+
+
+#Populates "users" table.
+#cursor.execute("""
+#    INSERT INTO users (username, password) VALUES
+#    ('user1', 'password1'),
+#    ('user2', 'password2'),
+#    ('user3', 'password3'),
+#    ('user4', 'password4'),
+#    ('user5', 'password5')
+#""")
+    
+
+#result = cursor.execute("SELECT name FROM sqlite_master")
+#print(result.fetchall())
+    
+
+#Populates "users" table.
+#cursor.execute("INSERT INTO users (username, password) VALUES('user1', 'password1')")
+#enter_new_data

@@ -30,7 +30,7 @@ class DatabaseManager:
 
 ### Authentication Class/Methods ###
 #class UserAuthentication:
-#    def __init__(self, db_manager
+    #def __init__(self, db_manager, username, password)
 
 def login_user(db_manager):
     while True:
@@ -209,7 +209,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
 
 #print(db_manager.execute_query("SELECT username FROM users"))
