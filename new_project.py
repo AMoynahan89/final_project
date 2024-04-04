@@ -41,8 +41,17 @@ class Users:
         query = "SELECT username FROM users WHERE username = ?"
         params = [self.username]
         user = self.db_manager.execute_query(query, params)
-        if user:
-            return True
+        if user is not None:
+            return user
+        else:
+            return False
+        
+    def password_mathces(self):
+        query = "SELECT password FROM users WHERE password = ?"
+        params = [self.password]
+        correct_password = self.db_manager.execute_query(query, params)
+        if correct_password is not None:
+            return correct_password
         else:
             return False
 
@@ -50,7 +59,6 @@ class Users:
     def get_user_id(self):
         self.user_id = self.db_manager.execute_query("SELECT user_id FROM users WHERE username = ?", [self.username])
         return self.user_id[0][0] # Ensure user_id[0][0] is used to extract the actual ID from the fetched result
-
 
 
 def yes_or_no(question):
@@ -63,9 +71,11 @@ def yes_or_no(question):
 
 # Potentially top level main function
 def login_user(user):
-    if user.user_exists():
+    print(user.user_exists())
+    print(user.password_mathces())
+    if user.user_exists() and user.password_mathces():
         print("yay")
-        return user.get_user_id()
+        #print(user.get_user_id())
     #potentially else block with error message here
     else:
         print("oh no")
@@ -79,6 +89,10 @@ def main():
     user_response = yes_or_no("\nDo you have an account? (yes/no): ")
     if user_response == "yes":
         login_user(user)
+        #result = db_manager.execute_query("SELECT username FROM Users")
+        #print(result)
+        #result = db_manager.execute_query("SELECT password FROM Users")
+        #print(result)
     else:
         user.create_new_user()    
 
@@ -88,6 +102,11 @@ if __name__ == "__main__":
 
 
 """
+# Current Users table
+[('user1',), ('user2',), ('user3',), ('user4',), ('user5',), ('Gramahan',), ('Ashleigh',), ('Arjuna',), ('Faith',)]
+[('password1',), ('password2',), ('password3',), ('password4',), ('password5',), ('GramahanPass',), ('Mama',), ('Dada',), ('more',)]
+
+
 def main():
     db_manager = DatabaseManager("database/my_database.db")
     
