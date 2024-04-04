@@ -57,15 +57,6 @@ def credentials_exist(username, password=None):
         return False  # User does not exist (or password does not match if provided)
 
 
-"""
-def credentials_exist(username, password=None):
-    query = "SELECT username FROM users WHERE username = ?" + (" AND password = ?" if password else "")
-    params = (username,) if password is None else (username, password)
-    
-    user = db_manager.execute_query(query, params)
-    return bool(user)
-"""
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -79,3 +70,13 @@ if __name__ == "__main__":
 
 
 ######### $ flask --app (app name) run
+    
+
+"""
+def credentials_exist(username, password=None):
+    query = "SELECT username FROM users WHERE username = ?" + (" AND password = ?" if password else "")
+    params = (username,) if password is None else (username, password)
+    
+    user = db_manager.execute_query(query, params)
+    return bool(user)
+"""
