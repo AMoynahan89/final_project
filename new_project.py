@@ -62,16 +62,11 @@ class Authenticator:
 
     # Checks if username is in database. Returns a Boolean value.
     def user_exists(self):
-        query = "SELECT username FROM users WHERE username = ?"
-        params = [self.user.username]
-        user = self.db_manager.execute_query(query, params)
+        user = self.db_manager.execute_query("SELECT username FROM users WHERE username = ?", [self.user.username])
         return bool(user)
-        # list comprehension
 
     def password_mathces(self):
-        query = "SELECT password FROM users WHERE password = ?"
-        params = [self.user.password]
-        correct_password = self.db_manager.execute_query(query, params)
+        correct_password = self.db_manager.execute_query("SELECT password FROM users WHERE password = ?", [self.user.password])
         return bool(correct_password)
 
     def login_user(self):
