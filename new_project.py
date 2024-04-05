@@ -29,7 +29,7 @@ class DatabaseManager:
 
 
 ### Authentication Class/Methods ###
-class Users:
+class User:
     def __init__(self, username, password, db_manager):
         self.db_manager = db_manager
         self.username = username
@@ -57,8 +57,8 @@ class Users:
 
     # Returns actual user_id as int, not a tuple
     def get_user_id(self):
-        self.user_id = self.db_manager.execute_query("SELECT user_id FROM users WHERE username = ?", [self.username])
-        return self.user_id[0][0] # Ensure user_id[0][0] is used to extract the actual ID from the fetched result
+        user_id = self.db_manager.execute_query("SELECT user_id FROM users WHERE username = ?", [self.username])
+        return user_id[0][0] # Ensure user_id[0][0] is used to extract the actual ID from the fetched result
 
 
 def yes_or_no(question):
@@ -75,7 +75,7 @@ def login_user(user):
     print(user.password_mathces())
     if user.user_exists() and user.password_mathces():
         print("yay")
-        #print(user.get_user_id())
+        print(user.get_user_id())
     #potentially else block with error message here
     else:
         print("oh no")
@@ -84,7 +84,7 @@ def main():
     db_manager = DatabaseManager("database/my_database.db")
     username = input("username: ")
     password = input("password: ")
-    user = Users(username, password, db_manager)
+    user = User(username, password, db_manager)
     # Login
     user_response = yes_or_no("\nDo you have an account? (yes/no): ")
     if user_response == "yes":
