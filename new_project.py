@@ -44,10 +44,9 @@ class User:
 
     @password.setter
     def password(self, value):
-        #hashed_pass = bcrypt.hashpw(value.encode('utf-8'), bcrypt.gensalt())
-        #print(hashed_pass)
-        #self._password = hashed_pass
-        self._password = value
+        hashed = bcrypt.hashpw(value.encode('utf-8'), bcrypt.gensalt())
+        self._password = hashed
+        #self._password = value
 
     # Returns actual user_id as int, not a tuple
     def get_user_id(self):
@@ -64,6 +63,11 @@ class Authenticator:
     def user_exists(self):
         user = self.db_manager.execute_query("SELECT username FROM users WHERE username = ?", [self.user.username])
         return bool(user)
+
+if bcrypt.checkpw(password, hashed):
+    print("It Matches!")
+else:
+    print("It Does not Match :(")
 
     def password_mathces(self):
         correct_password = self.db_manager.execute_query("SELECT password FROM users WHERE password = ?", [self.user.password])
@@ -116,16 +120,16 @@ if __name__ == "__main__":
 
 
 """
->>> import bcrypt
->>> password = b"super secret password"
->>> # Hash a password for the first time, with a randomly-generated salt
->>> hashed = bcrypt.hashpw(password, bcrypt.gensalt())
->>> # Check that an unhashed password matches one that has previously been
->>> # hashed
->>> if bcrypt.checkpw(password, hashed):
-...     print("It Matches!")
-... else:
-...     print("It Does not Match :(")
+import bcrypt
+password = b"super secret password"
+# Hash a password for the first time, with a randomly-generated salt
+hashed = bcrypt.hashpw(password, bcrypt.gensalt())
+# Check that an unhashed password matches one that has previously been
+# hashed
+if bcrypt.checkpw(password, hashed):
+    print("It Matches!")
+else:
+    print("It Does not Match :(")
 
 result = db_manager.execute_query("SELECT username, password FROM Users")
 print(result)
