@@ -53,7 +53,7 @@ class User:
 
     # Returns actual user_id as int, not a tuple
     def get_user_id(self):
-        user_id = self.db_manager.execute_query("SELECT user_id FROM users WHERE username = ?", [self.username])
+        user_id = self.db_manager.execute_query("SELECT user_id FROM users WHERE username = ?", [self._username])
         return user_id[0][0] # Ensure user_id[0][0] is used to extract the actual ID from the fetched result
 
 
@@ -107,7 +107,7 @@ def yes_or_no(question):
 def main():
     db_manager = DatabaseManager("database/my_database.db")
     user = User(db_manager)
-    auth = Authenticator(user, db_manager)
+    auth = Authenticator(db_manager, user)
 
     # Login
     user_response = yes_or_no("\nDo you have an account? (yes/no): ")
