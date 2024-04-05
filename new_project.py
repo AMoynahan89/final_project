@@ -44,9 +44,10 @@ class User:
 
     @password.setter
     def password(self, value):
-        hashed_pass = bcrypt.hashpw(value.encode('utf-8'), bcrypt.gensalt())
-        print(hashed_pass)
-        self._password = hashed_pass
+        #hashed_pass = bcrypt.hashpw(value.encode('utf-8'), bcrypt.gensalt())
+        #print(hashed_pass)
+        #self._password = hashed_pass
+        self._password = value
 
     # Returns actual user_id as int, not a tuple
     def get_user_id(self):
@@ -64,21 +65,14 @@ class Authenticator:
         query = "SELECT username FROM users WHERE username = ?"
         params = [self.user.username]
         user = self.db_manager.execute_query(query, params)
-        if user is not None:
-            return user
-        else:
-            return False
+        return bool(user)
         # list comprehension
 
     def password_mathces(self):
         query = "SELECT password FROM users WHERE password = ?"
         params = [self.user.password]
         correct_password = self.db_manager.execute_query(query, params)
-        if correct_password is not None:
-            return correct_password
-        else:
-            return False        
-        # more list comprehension
+        return bool(correct_password)
 
     def login_user(self):
         if self.user_exists() and self.password_mathces():
@@ -119,9 +113,6 @@ def main():
         user.username = input("Username: ")
         user.password = input("Password: ")
         auth.create_new_user()
-    hashed_password = db_manager.execute_query("SELECT password FROM users WHERE username = ?", user.username)    
-    if user.password == hashed_password:
-        print("Hashed pass matches database pass.")
     db_manager.close()
 
 
