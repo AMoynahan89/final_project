@@ -1,10 +1,26 @@
 import sqlite3
 
-con = sqlite3.connect("my_database.db")
 
-cursor = con.cursor()
+class DatabaseManager:
+    def __init__(self, db_name):
+        self.db_name = db_name
+        self.con = sqlite3.connect(self.db_name)
+        self.cursor = self.con.cursor()
 
+    def execute_query(self, query, params=None):
+        if params:
+            self.cursor.execute(query, params)
+        else:
+            self.cursor.execute(query)
+        return self.cursor.fetchall()
 
+    def commit(self):
+        self.con.commit()
+
+    def close(self):
+        self.con.close()
+
+db_manager = DatabaseManager("my_database.db")
 
 ### Need to address case sensitivity issues between program and database. ###
 
@@ -73,10 +89,13 @@ cursor = con.cursor()
 #result = cursor.execute("SELECT user_id, username FROM Users")
 #print(result.fetchall())
 
+query = "SELECT password FROM Users WHERE username = ?"
+params = ["Mama"]
+result = db_manager.execute_query(query, params)
+print(result[0][0])
+
 #result = cursor.execute("SELECT user_id, question FROM question_answers")
 #print(result.fetchall())
 
-result = cursor.execute("SELECT user_id, answer FROM question_answers")
-print(result.fetchall())
-
-con.close()
+#result = cursor.execute("SELECT user_id, answer FROM question_answers")
+#print(result.fetchall())
