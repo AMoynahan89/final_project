@@ -86,12 +86,8 @@ class Authenticator:
 
     # Potentially top level main function
     def login_user(self):
-#        print(self.user_exists())
-#        print(self.password_mathces())
         if self.user_exists() and self.password_mathces():
             print("yay")
-            #return self.user.get_user_id()
-        #potentially else block with error message here
         else:
             print("oh no")
 
