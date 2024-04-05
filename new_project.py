@@ -1,5 +1,6 @@
 import sqlite3
 import re
+import bcrypt
 
 
 class DatabaseManager:
@@ -7,8 +8,7 @@ class DatabaseManager:
         self.db_name = db_name
         self.con = sqlite3.connect(self.db_name)
         self.cursor = self.con.cursor()
-    
-    # A method to query the database
+
     def execute_query(self, query, params=None):
         if params:
             self.cursor.execute(query, params)
@@ -16,11 +16,9 @@ class DatabaseManager:
             self.cursor.execute(query)
         return self.cursor.fetchall()
 
-    # A method to commit to the database
     def commit(self):
         self.con.commit()
 
-    # A method to close the database
     def close(self):
         self.con.close()
 
@@ -46,11 +44,13 @@ class User:
 
     @password.setter
     def password(self, value):
-        self._password = value
+        hashed_pass = bcrypt.hashpw(value.encode('utf-8'), bcrypt.gensalt())
+        print(hashed_pass)
+        self._password = hashed_pass
 
     # Returns actual user_id as int, not a tuple
     def get_user_id(self):
-        user_id = self.db_manager.execute_query("SELECT user_id FROM users WHERE username = ?", [self._username])
+        user_id = self.db_manager.execute_query("SELECT user_id FROM users WHERE username = ?", [self.username])
         return user_id[0][0] # Ensure user_id[0][0] is used to extract the actual ID from the fetched result
 
 
@@ -118,7 +118,10 @@ def main():
     else:
         user.username = input("Username: ")
         user.password = input("Password: ")
-        auth.create_new_user()    
+        auth.create_new_user()
+    hashed_password = db_manager.execute_query("SELECT password FROM users WHERE username = ?", user.username)    
+    if user.password == hashed_password:
+        print("Hashed pass matches database pass.")
     db_manager.close()
 
 
@@ -127,6 +130,17 @@ if __name__ == "__main__":
 
 
 """
+>>> import bcrypt
+>>> password = b"super secret password"
+>>> # Hash a password for the first time, with a randomly-generated salt
+>>> hashed = bcrypt.hashpw(password, bcrypt.gensalt())
+>>> # Check that an unhashed password matches one that has previously been
+>>> # hashed
+>>> if bcrypt.checkpw(password, hashed):
+...     print("It Matches!")
+... else:
+...     print("It Does not Match :(")
+
 result = db_manager.execute_query("SELECT username, password FROM Users")
 print(result)
 
