@@ -2,9 +2,6 @@ import sqlite3
 import re
 
 
-### Dtabase functionality ###
-
-# Class for managing all database functionality
 class DatabaseManager:
     def __init__(self, db_name):
         self.db_name = db_name
@@ -27,7 +24,7 @@ class DatabaseManager:
     def close(self):
         self.con.close()
 
-### User/UserProfile class ###
+
 class User:
     def __init__(self, db_manager):
         self.db_manager = db_manager
@@ -57,7 +54,6 @@ class User:
         return user_id[0][0] # Ensure user_id[0][0] is used to extract the actual ID from the fetched result
 
 
-### Authentication Class/Methods ###
 class Authenticator:
     def __init__(self, db_manager, user):
         self.db_manager = db_manager
@@ -84,11 +80,11 @@ class Authenticator:
             return False        
         # more list comprehension
 
-    # Potentially top level main function
     def login_user(self):
         if self.user_exists() and self.password_mathces():
             print("yay")
         else:
+            # Need to handle login failures better
             print("oh no")
 
     def create_new_user(self):
@@ -97,6 +93,7 @@ class Authenticator:
             self.db_manager.commit()
             print("New user created!")
         else:
+            # Need to handle taken username better
             print(f"The username {self.user.username} is already taken. Please chose a different username.")
 
 
@@ -112,11 +109,7 @@ def main():
     db_manager = DatabaseManager("database/my_database.db")
     user = User(db_manager)
     auth = Authenticator(db_manager, user)
-    result = db_manager.execute_query("SELECT username FROM Users")
-    print(result)
-    result = db_manager.execute_query("SELECT password FROM Users")
-    print(result)
-    # Login
+
     user_response = yes_or_no("\nDo you have an account? (yes/no): ")
     if user_response == "yes":
         user.username = input("Username: ")
@@ -126,6 +119,7 @@ def main():
         user.username = input("Username: ")
         user.password = input("Password: ")
         auth.create_new_user()    
+    db_manager.close()
 
 
 if __name__ == "__main__":
@@ -133,6 +127,9 @@ if __name__ == "__main__":
 
 
 """
+result = db_manager.execute_query("SELECT username, password FROM Users")
+print(result)
+
 
 # Current Users table
 [('user1',), ('user2',), ('user3',), ('user4',), ('user5',), ('Gramahan',), ('Ashleigh',), ('Arjuna',), ('Faith',)]
