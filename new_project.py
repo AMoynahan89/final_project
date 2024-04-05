@@ -46,7 +46,6 @@ class User:
     def password(self, value):
         hashed = bcrypt.hashpw(value.encode('utf-8'), bcrypt.gensalt())
         self._password = hashed
-        #self._password = value
 
     # Returns actual user_id as int, not a tuple
     def get_user_id(self):
@@ -64,21 +63,33 @@ class Authenticator:
         user = self.db_manager.execute_query("SELECT username FROM users WHERE username = ?", [self.user.username])
         return bool(user)
 
-if bcrypt.checkpw(password, hashed):
-    print("It Matches!")
-else:
-    print("It Does not Match :(")
+#hashed = bcrypt.hashpw(value.encode('utf-8'), bcrypt.gensalt())
+#self._password = hashed
+#bcrypt.checkpw(password, hashed)
 
-    def password_mathces(self):
-        correct_password = self.db_manager.execute_query("SELECT password FROM users WHERE password = ?", [self.user.password])
-        return bool(correct_password)
+    def password_matches(self, raw_password):
+        result = self.db_manager.execute_query("SELECT password FROM users WHERE username = ?", [self.user.username])
+        print(result[0][0])
+        if result:
+            stored_password = result[0][0]
+            if bcrypt.checkpw(raw_password.encode("utf-8"), stored_password):
+                self.user.password = raw_password
+                print("Password matches!")
+                return True
+            else:
+                print("No luck!")
+                quit()
+        else:
+            print("Credentials do not exist.") # I don't think this is accurate.
+            quit()
+        #return bool(stored_password)
 
     def login_user(self):
-        if self.user_exists() and self.password_mathces():
-            print("yay")
+        if self.user_exists() and self.user.password:
+            print("Logged In")
         else:
             # Need to handle login failures better
-            print("oh no")
+            print("Failed to log in.")
 
     def create_new_user(self):
         if not self.user_exists():
@@ -106,8 +117,9 @@ def main():
     user_response = yes_or_no("\nDo you have an account? (yes/no): ")
     if user_response == "yes":
         user.username = input("Username: ")
-        user.password = input("Password: ")
-        auth.login_user()
+        raw_password = input("Password: ")
+        if auth.password_matches(raw_password):
+            auth.login_user()
     else:
         user.username = input("Username: ")
         user.password = input("Password: ")
