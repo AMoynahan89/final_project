@@ -29,7 +29,7 @@ class DatabaseManager:
 
 
 ### Authentication Class/Methods ###
-class User:
+class Authenticator:
     def __init__(self, username, password, db_manager):
         self.db_manager = db_manager
         self.username = username
@@ -84,7 +84,7 @@ def main():
     db_manager = DatabaseManager("database/my_database.db")
     username = input("username: ")
     password = input("password: ")
-    user = User(username, password, db_manager)
+    user = Authenticator(username, password, db_manager)
     # Login
     user_response = yes_or_no("\nDo you have an account? (yes/no): ")
     if user_response == "yes":
