@@ -1,6 +1,10 @@
 import sqlite3
 
+# Use these two lines without DatabaseManager
+con = sqlite3.connect("my_database.db")
+cursor = con.cursor()
 
+"""
 class DatabaseManager:
     def __init__(self, db_name):
         self.db_name = db_name
@@ -21,6 +25,8 @@ class DatabaseManager:
         self.con.close()
 
 db_manager = DatabaseManager("my_database.db")
+"""
+
 
 ### Need to address case sensitivity issues between program and database. ###
 
@@ -83,19 +89,23 @@ db_manager = DatabaseManager("my_database.db")
 
 #con.commit()
 
-#result = cursor.execute("SELECT name FROM sqlite_master")
-#print(result.fetchall())
+result = cursor.execute("SELECT name FROM sqlite_master")
+print(result.fetchall())
 
 #result = cursor.execute("SELECT user_id, username FROM Users")
 #print(result.fetchall())
-
-query = "SELECT password FROM Users WHERE username = ?"
-params = ["Mama"]
-result = db_manager.execute_query(query, params)
-print(result[0][0])
 
 #result = cursor.execute("SELECT user_id, question FROM question_answers")
 #print(result.fetchall())
 
 #result = cursor.execute("SELECT user_id, answer FROM question_answers")
 #print(result.fetchall())
+
+con.close()
+
+
+# Use these four lines when using DatabaseManager
+#query = "SELECT password FROM Users WHERE username = ?"
+#params = ["Mama"]
+#result = db_manager.execute_query(query, params)
+#print(result[0][0])
