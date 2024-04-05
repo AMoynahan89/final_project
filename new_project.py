@@ -91,6 +91,14 @@ class Authenticator:
         else:
             print("oh no")
 
+    def create_new_user(self):
+        if not self.user_exists():
+            self.db_manager.execute_query("INSERT INTO users (username, password) VALUES(?, ?)", (self.user.username, self.user.password))
+            self.db_manager.commit()
+            print("New user created!")
+        else:
+            print(f"The username {self.user.username} is already taken. Please chose a different username.")
+
 
 def yes_or_no(question):
     user_response = input(question).lower()
@@ -104,19 +112,20 @@ def main():
     db_manager = DatabaseManager("database/my_database.db")
     user = User(db_manager)
     auth = Authenticator(db_manager, user)
-
+    result = db_manager.execute_query("SELECT username FROM Users")
+    print(result)
+    result = db_manager.execute_query("SELECT password FROM Users")
+    print(result)
     # Login
     user_response = yes_or_no("\nDo you have an account? (yes/no): ")
     if user_response == "yes":
         user.username = input("Username: ")
         user.password = input("Password: ")
         auth.login_user()
-        #result = db_manager.execute_query("SELECT username FROM Users")
-        #print(result)
-        #result = db_manager.execute_query("SELECT password FROM Users")
-        #print(result)
     else:
-        user.create_new_user()    
+        user.username = input("Username: ")
+        user.password = input("Password: ")
+        auth.create_new_user()    
 
 
 if __name__ == "__main__":
@@ -124,6 +133,7 @@ if __name__ == "__main__":
 
 
 """
+
 # Current Users table
 [('user1',), ('user2',), ('user3',), ('user4',), ('user5',), ('Gramahan',), ('Ashleigh',), ('Arjuna',), ('Faith',)]
 [('password1',), ('password2',), ('password3',), ('password4',), ('password5',), ('GramahanPass',), ('Mama',), ('Dada',), ('more',)]
