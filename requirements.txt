@@ -1,3 +1,5 @@
 Any pip-installable libraries that your project requires must be listed, one per line, in this file.
 
 pip install flask
+
+pip install bcrypt
