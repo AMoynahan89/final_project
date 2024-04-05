@@ -29,11 +29,27 @@ class DatabaseManager:
 
 ### User/UserProfile class ###
 class User:
-    def __init__(self, username, password, db_manager):
+    def __init__(self, db_manager):
         self.db_manager = db_manager
-        self.username = username
-        self.password = password
+        self._username = None
+        self._password = None
         self.user_id = None
+
+    @property
+    def username(self):
+        return self._username
+
+    @username.setter
+    def username(self, value):
+        self._username = value
+
+    @property
+    def password(self):
+        return self._password
+
+    @password.setter
+    def password(self, value):
+        self._password = value
 
     # Returns actual user_id as int, not a tuple
     def get_user_id(self):
@@ -43,29 +59,41 @@ class User:
 
 ### Authentication Class/Methods ###
 class Authenticator:
-    def __init__(self, username, password, db_manager):
+    def __init__(self, db_manager, user):
         self.db_manager = db_manager
-        self.username = username
-        self.password = password
+        self.user = user
 
     # Checks if username is in database. Returns a Boolean value.
     def user_exists(self):
         query = "SELECT username FROM users WHERE username = ?"
-        params = [self.username]
+        params = [self.user.username]
         user = self.db_manager.execute_query(query, params)
         if user is not None:
             return user
         else:
             return False
-        
+        # list comprehension
+
     def password_mathces(self):
         query = "SELECT password FROM users WHERE password = ?"
-        params = [self.password]
+        params = [self.user.password]
         correct_password = self.db_manager.execute_query(query, params)
         if correct_password is not None:
             return correct_password
         else:
-            return False
+            return False        
+        # more list comprehension
+
+    # Potentially top level main function
+    def login_user(self):
+#        print(self.user_exists())
+#        print(self.password_mathces())
+        if self.user_exists() and self.password_mathces():
+            print("yay")
+            #return self.user.get_user_id()
+        #potentially else block with error message here
+        else:
+            print("oh no")
 
 
 def yes_or_no(question):
@@ -76,26 +104,17 @@ def yes_or_no(question):
     return user_response
 
 
-# Potentially top level main function
-def login_user(user):
-    print(user.user_exists())
-    print(user.password_mathces())
-    if user.user_exists() and user.password_mathces():
-        print("yay")
-        print(user.get_user_id())
-    #potentially else block with error message here
-    else:
-        print("oh no")
-
 def main():
     db_manager = DatabaseManager("database/my_database.db")
-    username = input("username: ")
-    password = input("password: ")
-    user = Authenticator(username, password, db_manager)
+    user = User(db_manager)
+    auth = Authenticator(user, db_manager)
+
     # Login
     user_response = yes_or_no("\nDo you have an account? (yes/no): ")
     if user_response == "yes":
-        login_user(user)
+        user.username = input("Username: ")
+        user.password = input("Password: ")
+        auth.login_user()
         #result = db_manager.execute_query("SELECT username FROM Users")
         #print(result)
         #result = db_manager.execute_query("SELECT password FROM Users")
