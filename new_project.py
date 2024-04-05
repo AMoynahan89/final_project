@@ -27,6 +27,19 @@ class DatabaseManager:
     def close(self):
         self.con.close()
 
+### User/UserProfile class ###
+class User:
+    def __init__(self, username, password, db_manager):
+        self.db_manager = db_manager
+        self.username = username
+        self.password = password
+        self.user_id = None
+
+    # Returns actual user_id as int, not a tuple
+    def get_user_id(self):
+        user_id = self.db_manager.execute_query("SELECT user_id FROM users WHERE username = ?", [self.username])
+        return user_id[0][0] # Ensure user_id[0][0] is used to extract the actual ID from the fetched result
+
 
 ### Authentication Class/Methods ###
 class Authenticator:
@@ -34,7 +47,6 @@ class Authenticator:
         self.db_manager = db_manager
         self.username = username
         self.password = password
-        self.user_id = None
 
     # Checks if username is in database. Returns a Boolean value.
     def user_exists(self):
@@ -54,11 +66,6 @@ class Authenticator:
             return correct_password
         else:
             return False
-
-    # Returns actual user_id as int, not a tuple
-    def get_user_id(self):
-        user_id = self.db_manager.execute_query("SELECT user_id FROM users WHERE username = ?", [self.username])
-        return user_id[0][0] # Ensure user_id[0][0] is used to extract the actual ID from the fetched result
 
 
 def yes_or_no(question):
