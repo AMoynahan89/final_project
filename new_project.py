@@ -69,20 +69,12 @@ class Authenticator:
 
     def password_matches(self, raw_password):
         result = self.db_manager.execute_query("SELECT password FROM users WHERE username = ?", [self.user.username])
-        print(result[0][0])
         if result:
             stored_password = result[0][0]
-            if bcrypt.checkpw(raw_password.encode("utf-8"), stored_password):
-                self.user.password = raw_password
-                print("Password matches!")
-                return True
-            else:
-                print("No luck!")
-                quit()
+            return bcrypt.checkpw(raw_password.encode("utf-8"), stored_password)
         else:
-            print("Credentials do not exist.") # I don't think this is accurate.
-            quit()
-        #return bool(stored_password)
+            print("Username does not exist.")
+            return False
 
     def login_user(self):
         if self.user_exists() and self.user.password:
