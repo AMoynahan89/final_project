@@ -49,7 +49,7 @@ class User:
     # Returns actual user_id as int, not a tuple
     def get_user_id(self):
         user_id = self.db_manager.execute_query("SELECT user_id FROM users WHERE username = ?", [self.username])
-        return user_id[0][0] # Ensure user_id[0][0] is used to extract the actual ID from the fetched result
+        self.user_id = user_id[0][0] # Ensure user_id[0][0] is used to extract the actual ID from the fetched result
 
 
 class Authenticator:
@@ -96,11 +96,11 @@ class AdministratorMenu:
             choice = input("Enter your choice: ")
             
             if choice == "1":
-                enter_new_data(db_manager, user_id)
+                self.enter_new_data()
             elif choice == "2":
-                display_user_data()
+                self.display_user_q_and_a()
             elif choice == "3":
-                log_activity(db_manager, user_id)
+                self.log_activity()
             elif choice == "4":
                 quit()
             else:
@@ -108,23 +108,23 @@ class AdministratorMenu:
 
 
     #Inserts question-answer pairs into database
-    def enter_new_data(db_manager, user_id):
+    def enter_new_data(self):
         question = input("Enter your question: ")
         answer = input("Enter the answer: ")
-        db_manager.execute_query("INSERT INTO question_answers (user_id, question, answer) VALUES (?, ?, ?)", (user_id, question, answer))
-        db_manager.commit()
+        self.db_manager.execute_query("INSERT INTO question_answers (user_id, question, answer) VALUES (?, ?, ?)", (self.user.user_id, question, answer))
+        self.db_manager.commit()
 
 
-    def display_user_data():
+    def display_user_q_and_a(self):
         pass
 
 
     # Keep track of a repedative/interesting behaviour(often asked questions)
-    def log_activity(db_manager, user_id):
+    def log_activity(self):
         activity = input("Enter whatever you would like to make note of: ")
         # Need to create this table
-        db_manager.execute_query("INSERT INTO activity_log (username, password) VALUES(?, ?)", (user_id, activity))
-        db_manager.commit()
+        self.db_manager.execute_query("INSERT INTO activity_log (username, password) VALUES(?, ?)", (self.user.user_id, activity))
+        self.db_manager.commit()
 
 
 def yes_or_no(question):
@@ -156,7 +156,7 @@ def main():
     
     user_response = yes_or_no("\nAre you a carteaker? (yes/no): ")
     if user_response == "yes":
-        admin_menu = 
+        admin_menu = AdministratorMenu(db_manager, user)
     else:
         pass
         # Open User Menu
