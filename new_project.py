@@ -122,8 +122,8 @@ class AdministratorMenu:
     # Keep track of a repedative/interesting behaviour(often asked questions)
     def log_activity(self):
         activity = input("Enter whatever you would like to make note of: ")
-        # Need to create this table
-        self.db_manager.execute_query("INSERT INTO activity_log (username, password) VALUES(?, ?)", (self.user.user_id, activity))
+        frequency = input("How often does this happen?")
+        self.db_manager.execute_query("INSERT INTO activity_log (activity, frequency) VALUES (?, ?, ?)", (self.user.user_id, activity, frequency))
         self.db_manager.commit()
 
 

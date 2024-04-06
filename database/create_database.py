@@ -87,6 +87,17 @@ cursor.execute("""
 #    (5, 'What is your favorite hobby?', 'Playing guitar')
 #""")
 
+cursor.execute("""
+    CREATE TABLE activity_log(
+    activity_id INTEGER PRIMARY KEY,
+    user_id INTEGER,
+    activity TEXT NOT NULL,
+    frequency TEXT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    )
+""")
+
+
 #con.commit()
 
 result = cursor.execute("SELECT name FROM sqlite_master")
