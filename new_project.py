@@ -80,7 +80,7 @@ class Authenticator:
 
     
 # Administrator interface menu
-class AdministratorProfile:
+class AdministratorInterface:
     def __init__(self, db_manager, user):
         self.db_manager = db_manager
         self.user = user
@@ -106,7 +106,6 @@ class AdministratorProfile:
             else:
                 continue
 
-
     #Inserts question-answer pairs into database
     def enter_new_data(self):
         question = input("Enter your question: ")
@@ -114,10 +113,8 @@ class AdministratorProfile:
         self.db_manager.execute_query("INSERT INTO question_answers (user_id, question, answer) VALUES (?, ?, ?)", (self.user.user_id, question, answer))
         self.db_manager.commit()
 
-
     def display_user_q_and_a(self):
         pass
-
 
     # Keep track of a repedative/interesting behaviour(often asked questions)
     def log_activity(self):
@@ -125,6 +122,46 @@ class AdministratorProfile:
         frequency = input("How often does this happen?")
         self.db_manager.execute_query("INSERT INTO activity_log (activity, frequency) VALUES (?, ?, ?)", (self.user.user_id, activity, frequency))
         self.db_manager.commit()
+
+
+class UserInterface:
+    def __init__(self, db_manager, user):
+        self.db_manager = db_manager
+        self.user = user
+
+    def menu(self):
+        while True:
+            print("\nHow can I help you?")
+            print("(1) I have a question.")
+            #print("(2) What do you know about me?")
+            #print("(3) Just chat.")
+            print("(4) Exit.")
+            choice = input("Enter your choice: ")
+            
+            if choice == "1":
+                answer = self.answer_question()
+                print(answer)
+            elif choice == "2":
+                self.summarize_user_data()
+            elif choice == "3":
+                self.just_chat()
+            elif choice == "4":
+                quit()
+            else:
+                continue
+
+    # Answers users questions if that question is in the database. Input must be verbatim
+    def answer_question(self):
+        question = input("Enter your question: ")
+        answer = self.db_manager.execute_query("SELECT answer FROM question_answers WHERE user_id = ? AND question = ?", (self.user.user_id, question))
+        return answer[0][0]
+
+    #good start
+    def summarize_user_data(self):
+        pass
+
+    def just_chat(self):
+        pass
 
 
 def yes_or_no(question):
@@ -139,7 +176,7 @@ def main():
     db_manager = DatabaseManager("database/my_database.db")
     user = User(db_manager)
     auth = Authenticator(db_manager, user)
-
+# Current Login/Authentication. I need to deal wwith the hashing issue.
     user_response = yes_or_no("\nDo you have an account? (yes/no): ")
     if user_response == "yes":
         user.username = input("Username: ").lower()
@@ -153,14 +190,14 @@ def main():
         user.password = input("Password: ")
         auth.create_new_user()
         print("New user created!")
-    
+# User Interface
     user_response = yes_or_no("\nAre you a carteaker? (yes/no): ")
     if user_response == "yes":
-        admin_profile = AdministratorProfile(db_manager, user)
-        admin_profile.menu()
-#    else:
-#        user_profile = UserProfile(db_manager, user)
-#        user_profile.menu()
+        a_interface = AdministratorInterface(db_manager, user)
+        a_interface.menu()
+    else:
+        u_interface = UserInterface(db_manager, user)
+        u_interface.menu()
     db_manager.close()
 
 
