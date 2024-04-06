@@ -80,13 +80,13 @@ class Authenticator:
 
     
 # Administrator interface menu
-class AdministratorMenu:
+class AdministratorProfile:
     def __init__(self, db_manager, user):
         self.db_manager = db_manager
         self.user = user
 
 
-    def administrator_menu(self):
+    def menu(self):
         while True:
             print("\nHow can I help you?")
             print("(1) Enter important information about patient.")
@@ -156,10 +156,11 @@ def main():
     
     user_response = yes_or_no("\nAre you a carteaker? (yes/no): ")
     if user_response == "yes":
-        admin_menu = AdministratorMenu(db_manager, user)
-    else:
-        pass
-        # Open User Menu
+        admin_profile = AdministratorProfile(db_manager, user)
+        admin_profile.menu()
+#    else:
+#        user_profile = UserProfile(db_manager, user)
+#        user_profile.menu()
     db_manager.close()
 
 
