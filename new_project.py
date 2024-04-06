@@ -72,11 +72,59 @@ class Authenticator:
 
     def create_new_user(self):
         if not self.user_exists():
-            self.db_manager.execute_query("INSERT INTO users (username, password) VALUES(?, ?)", (self.user.username.lower(), self.user.password))
+            self.db_manager.execute_query("INSERT INTO users (username, password) VALUES(?, ?)", (self.user.username, self.user.password))
             self.db_manager.commit()
         else:
             # Need to handle taken username better
             print(f"The username {self.user.username} is already taken. Please chose a different username.")
+
+    
+# Administrator interface menu
+class AdministratorMenu:
+    def __init__(self, db_manager, user):
+        self.db_manager = db_manager
+        self.user = user
+
+
+    def administrator_menu(self):
+        while True:
+            print("\nHow can I help you?")
+            print("(1) Enter important information about patient.")
+            #print("(2) Display patient info.")
+            #print("(3) Make note of behaviors you would like to track.")
+            print("(4) Exit.")
+            choice = input("Enter your choice: ")
+            
+            if choice == "1":
+                enter_new_data(db_manager, user_id)
+            elif choice == "2":
+                display_user_data()
+            elif choice == "3":
+                log_activity(db_manager, user_id)
+            elif choice == "4":
+                quit()
+            else:
+                continue
+
+
+    #Inserts question-answer pairs into database
+    def enter_new_data(db_manager, user_id):
+        question = input("Enter your question: ")
+        answer = input("Enter the answer: ")
+        db_manager.execute_query("INSERT INTO question_answers (user_id, question, answer) VALUES (?, ?, ?)", (user_id, question, answer))
+        db_manager.commit()
+
+
+    def display_user_data():
+        pass
+
+
+    # Keep track of a repedative/interesting behaviour(often asked questions)
+    def log_activity(db_manager, user_id):
+        activity = input("Enter whatever you would like to make note of: ")
+        # Need to create this table
+        db_manager.execute_query("INSERT INTO activity_log (username, password) VALUES(?, ?)", (user_id, activity))
+        db_manager.commit()
 
 
 def yes_or_no(question):
@@ -94,22 +142,21 @@ def main():
 
     user_response = yes_or_no("\nDo you have an account? (yes/no): ")
     if user_response == "yes":
-        user.username = input("Username: ")
+        user.username = input("Username: ").lower()
         raw_password = input("Password: ")
         if auth.user_exists() and auth.password_matches(raw_password):
             print("Login succesful!")
         else:
             print("Invalid credentials")
     else:
-        user.username = input("Username: ")
+        user.username = input("Username: ").lower()
         user.password = input("Password: ")
         auth.create_new_user()
         print("New user created!")
     
     user_response = yes_or_no("\nAre you a carteaker? (yes/no): ")
     if user_response == "yes":
-        pass
-        # Open Admin Menu
+        admin_menu = 
     else:
         pass
         # Open User Menu
