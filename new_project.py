@@ -1,5 +1,4 @@
 import sqlite3
-import re
 import bcrypt
 
 
@@ -73,7 +72,7 @@ class Authenticator:
 
     def create_new_user(self):
         if not self.user_exists():
-            self.db_manager.execute_query("INSERT INTO users (username, password) VALUES(?, ?)", (self.user.username, self.user.password))
+            self.db_manager.execute_query("INSERT INTO users (username, password) VALUES(?, ?)", (self.user.username.lower(), self.user.password))
             self.db_manager.commit()
         else:
             # Need to handle taken username better
@@ -106,6 +105,14 @@ def main():
         user.password = input("Password: ")
         auth.create_new_user()
         print("New user created!")
+    
+    user_response = yes_or_no("\nAre you a carteaker? (yes/no): ")
+    if user_response == "yes":
+        pass
+        # Open Admin Menu
+    else:
+        pass
+        # Open User Menu
     db_manager.close()
 
 
