@@ -63,31 +63,24 @@ class Authenticator:
         user = self.db_manager.execute_query("SELECT username FROM users WHERE username = ?", [self.user.username])
         return bool(user)
 
-#hashed = bcrypt.hashpw(value.encode('utf-8'), bcrypt.gensalt())
-#self._password = hashed
-#bcrypt.checkpw(password, hashed)
-
     def password_matches(self, raw_password):
         result = self.db_manager.execute_query("SELECT password FROM users WHERE username = ?", [self.user.username])
         if result:
             stored_password = result[0][0]
             return bcrypt.checkpw(raw_password.encode("utf-8"), stored_password)
         else:
-            print("Username does not exist.")
             return False
 
-    def login_user(self):
-        if self.user_exists() and self.user.password:
-            print("Logged In")
-        else:
-            # Need to handle login failures better
-            print("Failed to log in.")
+    # Assures credentials meet regex requirements. Returns users credentials
+    def valid_credentials(self, credentials):
+        match = re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d){8,30}$", credentials)
+        is_match = bool(match)
+        return is_match
 
     def create_new_user(self):
         if not self.user_exists():
             self.db_manager.execute_query("INSERT INTO users (username, password) VALUES(?, ?)", (self.user.username, self.user.password))
             self.db_manager.commit()
-            print("New user created!")
         else:
             # Need to handle taken username better
             print(f"The username {self.user.username} is already taken. Please chose a different username.")
@@ -110,12 +103,15 @@ def main():
     if user_response == "yes":
         user.username = input("Username: ")
         raw_password = input("Password: ")
-        if auth.password_matches(raw_password):
-            auth.login_user()
+        if auth.user_exists() and auth.password_matches(raw_password):
+            print("Login succesful!")
+        else:
+            print("Invalid credentials")
     else:
         user.username = input("Username: ")
         user.password = input("Password: ")
         auth.create_new_user()
+        print("New user created!")
     db_manager.close()
 
 
@@ -168,14 +164,4 @@ def main():
     #search_data(db_manager, user_id):
     #just_chat()
     db_manager.close()
-
-
-
-# Assures credentials meet regex requirements. Returns users credentials
-def validate_credentials(self):
-    credentials = input(f"Enter your {credential_type}: ")
-    if re.fullmatch(r"([a-z0-9_]+)", credentials, re.IGNORECASE):
-        return credentials
-    else:
-        print(f"Invalid {credential_type}. Please use one or more characters, letters, numbers, or underscores only.")
 """
