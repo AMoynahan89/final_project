@@ -33,13 +33,13 @@ db_manager = DatabaseManager("my_database.db")
 
 
 #Creates the "users" table.
-#cursor.execute("""
-#    CREATE TABLE users(
-#    user_id INTEGER PRIMARY KEY,
-#    username TEXT NOT NULL,
-#    password TEXT NOT NULL
-#    )
-#""")
+cursor.execute("""
+    CREATE TABLE users(
+    user_id INTEGER PRIMARY KEY,
+    username TEXT NOT NULL,
+    password TEXT NOT NULL
+    )
+""")
 
 
 #Populates "users" table.
@@ -56,15 +56,15 @@ db_manager = DatabaseManager("my_database.db")
 
 
 #Creates the "question_answers" table.
-#cursor.execute("""
-#    CREATE TABLE question_answers(
-#    qa_id INTEGER PRIMARY KEY,
-#    user_id INTEGER,
-#    question TEXT NOT NULL,
-#    answer TEXT NOT NULL,
-#    FOREIGN KEY (user_id) REFERENCES users(user_id)
-#    )
-#""")
+cursor.execute("""
+    CREATE TABLE question_answers(
+    qa_id INTEGER PRIMARY KEY,
+    user_id INTEGER,
+    question TEXT NOT NULL,
+    answer TEXT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    )
+""")
 
 
 #Populates "question_answers" table.

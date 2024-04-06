@@ -71,12 +71,6 @@ class Authenticator:
         else:
             return False
 
-    # Assures credentials meet regex requirements. Returns users credentials
-    def valid_credentials(self, credentials):
-        match = re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d){8,30}$", credentials)
-        is_match = bool(match)
-        return is_match
-
     def create_new_user(self):
         if not self.user_exists():
             self.db_manager.execute_query("INSERT INTO users (username, password) VALUES(?, ?)", (self.user.username, self.user.password))
@@ -119,18 +113,14 @@ if __name__ == "__main__":
     main()
 
 
-"""
-import bcrypt
-password = b"super secret password"
-# Hash a password for the first time, with a randomly-generated salt
-hashed = bcrypt.hashpw(password, bcrypt.gensalt())
-# Check that an unhashed password matches one that has previously been
-# hashed
-if bcrypt.checkpw(password, hashed):
-    print("It Matches!")
-else:
-    print("It Does not Match :(")
 
+# Assures credentials meet regex requirements. Returns users credentials
+#def valid_credentials(self, credentials):
+#    match = re.match(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,30}$", credentials)
+#    is_match = bool(match)
+#    return is_match
+
+"""
 result = db_manager.execute_query("SELECT username, password FROM Users")
 print(result)
 
