@@ -3,7 +3,7 @@ import re
 
 
 ### Dtabase functionality ###
-
+### Implemented This Class ###
 # Class for managing all database functionality
 class DatabaseManager:
     def __init__(self, db_name):
@@ -39,6 +39,7 @@ def login_user(db_manager):
         #potentially else block with error message here
 
 
+### Implemented This Function ###
 def create_new_user(db_manager):
     while True:
         print("Create New Account")
@@ -62,6 +63,7 @@ def validate_credentials(credential_type):
             print(f"Invalid {credential_type}. Please use one or more characters, letters, numbers, or underscores only.")
 
 
+### Implemented This Function ###
 # Checks if entered credentials are in the database already. Returns a Bool value.
 def credentials_exist(db_manager, username, password=None):
     if password:
@@ -78,12 +80,14 @@ def credentials_exist(db_manager, username, password=None):
         return False  # User does not exist (or password does not match if provided)
 
 
+### Implemented This Function ###
 # Returns actual user_id as int, not a tuple
 def get_user_id(db_manager, user):
     user_id = db_manager.execute_query("SELECT user_id FROM users WHERE username = ?", [user])
     return user_id[0][0] # Ensure user_id[0][0] is used to extract the actual ID from the fetched result
 
 
+### Implemented This Function ###
 # Loop expecting a "yes" or "no"
 def yes_or_no(question):
     user_response = input(question).lower()
