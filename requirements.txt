@@ -3,3 +3,6 @@ Any pip-installable libraries that your project requires must be listed, one per
 pip install flask
 
 pip install bcrypt
+
+pip install spacy
+python -m spacy download en_core_web_sm
